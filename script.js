@@ -1,35 +1,19 @@
-// ===============================
-// MEVA MIX 🍓 — SCRIPT.JS
-// ===============================
+"use strict";
+
+/* =========================================================
+🍓 MEVA MIX — SCRIPT.JS
+========================================================= */
 
 const LANGUAGE_KEY = "mevaMixLanguage";
 const THEME_KEY = "mevaMixTheme";
 const CART_KEY = "mevaMixCart";
 
-const validLanguages = ["uz", "ru", "en"];
-const validThemes = ["light", "dark"];
-
-let currentLanguage = localStorage.getItem(LANGUAGE_KEY);
-let currentTheme = localStorage.getItem(THEME_KEY);
-let currentCategory = "all";
-
-// Noto'g'ri eski qiymatlar bo'lsa tozalaymiz
-if (!validLanguages.includes(currentLanguage)) {
-    currentLanguage = null;
-    localStorage.removeItem(LANGUAGE_KEY);
-}
-
-if (!validThemes.includes(currentTheme)) {
-    currentTheme = null;
-    localStorage.removeItem(THEME_KEY);
-}
-
-
-// ===============================
-// TARJIMALAR
-// ===============================
+/* =========================================================
+🌐 TILLAR
+========================================================= */
 
 const translations = {
+
     uz: {
         home: "Bosh sahifa",
         fruits: "Mevalar",
@@ -71,29 +55,15 @@ const translations = {
         quality: "Sifat kafolati",
 
         emptyCart: "Savatcha bo‘sh",
-        chooseFruit: "Mevalardan birortasini tanlang 🍎",
+        chooseFruit: "Sevimli mevalaringizni tanlang 🍓",
         total: "Jami:",
         order: "Buyurtma berish",
 
-        add: "Savatchaga qo‘shish",
-        quantity: "Miqdor",
-
+        add: "Savatchaga",
         themeTitle: "Rejimni tanlang",
         themeDescription: "Sayt ko‘rinishini tanlang",
         light: "Oq rejim",
-        dark: "Qorong‘i rejim",
-
-        footerText: "Har kuni yangi meva, har kuni yaxshi kayfiyat! ❤️",
-        rights: "Barcha huquqlar himoyalangan.",
-
-        added: "savatchaga qo‘shildi!",
-        cartEmpty: "Avval savatchaga meva qo‘shing.",
-        namePrompt: "Ismingiz:",
-        phonePrompt: "Telefon raqamingiz:",
-        addressPrompt: "Manzilingiz:",
-        orderSent: "Buyurtmangiz yuborildi! 🎉",
-        orderError: "Buyurtma yuborishda xatolik yuz berdi.",
-        cancelled: "Buyurtma bekor qilindi."
+        dark: "Qorong‘i rejim"
     },
 
     ru: {
@@ -106,7 +76,7 @@ const translations = {
         heroTitle1: "Каждый день",
         heroTitle2: "свежие фрукты.",
         heroText:
-            "Meva Mix — современный фруктовый магазин с самыми свежими и качественными фруктами.",
+            "Meva Mix — современный фруктовый магазин со свежими и качественными фруктами.",
 
         viewFruits: "Посмотреть фрукты",
         natural: "Натуральный продукт",
@@ -137,29 +107,15 @@ const translations = {
         quality: "Гарантия качества",
 
         emptyCart: "Корзина пуста",
-        chooseFruit: "Выберите один из фруктов 🍎",
+        chooseFruit: "Выберите любимые фрукты 🍓",
         total: "Итого:",
         order: "Оформить заказ",
 
-        add: "Добавить в корзину",
-        quantity: "Количество",
-
+        add: "В корзину",
         themeTitle: "Выберите режим",
         themeDescription: "Выберите внешний вид сайта",
         light: "Светлый режим",
-        dark: "Тёмный режим",
-
-        footerText: "Свежие фрукты каждый день и хорошее настроение! ❤️",
-        rights: "Все права защищены.",
-
-        added: "добавлен в корзину!",
-        cartEmpty: "Сначала добавьте фрукт в корзину.",
-        namePrompt: "Ваше имя:",
-        phonePrompt: "Ваш номер телефона:",
-        addressPrompt: "Ваш адрес:",
-        orderSent: "Ваш заказ отправлен! 🎉",
-        orderError: "Произошла ошибка при отправке заказа.",
-        cancelled: "Заказ отменён."
+        dark: "Тёмный режим"
     },
 
     en: {
@@ -172,10 +128,10 @@ const translations = {
         heroTitle1: "Fresh",
         heroTitle2: "every day.",
         heroText:
-            "Meva Mix is a modern fruit store with fresh, delicious and high-quality fruits for you.",
+            "Meva Mix is a modern fruit store with fresh, delicious and high-quality fruits.",
 
         viewFruits: "View fruits",
-        natural: "Natural products",
+        natural: "Natural product",
         types: "Fruit types",
         clients: "Happy clients",
         service: "Service",
@@ -195,7 +151,7 @@ const translations = {
         aboutTitle1: "Choosing fruit",
         aboutTitle2: "is now easy.",
         aboutText:
-            "Every day we choose the freshest and highest-quality fruits for you.",
+            "Every day we choose fresh and high-quality fruits for you.",
 
         fresh: "Fresh fruits",
         naturalProduct: "Natural products",
@@ -203,911 +159,2066 @@ const translations = {
         quality: "Quality guarantee",
 
         emptyCart: "Your cart is empty",
-        chooseFruit: "Choose some fruit 🍎",
+        chooseFruit: "Choose your favorite fruits 🍓",
         total: "Total:",
         order: "Place order",
 
         add: "Add to cart",
-        quantity: "Quantity",
-
         themeTitle: "Choose a mode",
         themeDescription: "Choose the website appearance",
         light: "Light mode",
-        dark: "Dark mode",
-
-        footerText: "Fresh fruit every day, better mood every day! ❤️",
-        rights: "All rights reserved.",
-
-        added: "added to cart!",
-        cartEmpty: "Add some fruit to the cart first.",
-        namePrompt: "Your name:",
-        phonePrompt: "Your phone number:",
-        addressPrompt: "Your address:",
-        orderSent: "Your order has been sent! 🎉",
-        orderError: "There was an error sending the order.",
-        cancelled: "Order cancelled."
+        dark: "Dark mode"
     }
 };
 
 
-// ===============================
-// MEVALAR
-// ===============================
+/* =========================================================
+🍎 MEVALAR
+⚠️ RASM LINKLARI SEN TASHLAGAN JS'DAN OLINDI
+========================================================= */
 
-const fruits = [
-    {
-        id: 1,
-        name: "Tarvuz",
-        emoji: "🍉",
+const fruits = {
+
+    "Tarvuz": {
         price: 5000,
         category: "klassik",
-        image: "https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?auto=format&fit=crop&w=700&q=80"
+        emoji: "🍉",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDRMWXWApMZsUKyXRouCHBDaEeL-0 ndziBktOrifCL4Q&s=10"
     },
-    {
-        id: 2,
-        name: "Qovun",
-        emoji: "🍈",
+
+    "Qovun": {
         price: 8000,
         category: "klassik",
-        image: "https://images.unsplash.com/photo-1570197788417-0e82375c9371?auto=format&fit=crop&w=700&q=80"
+        emoji: "🍈",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu7iA8wpKFdV_QnszJMcnXCzTtl30_lHP7JfFnlk0zBw&s=10"
     },
-    {
-        id: 3,
-        name: "Mango",
+
+    "Mango": {
+        price: 20000,
+        category: "tropik",
         emoji: "🥭",
-        price: 20000,
-        category: "tropik",
-        image: "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=700&q=80"
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjT2qz47DyLPskoSqjP4e25XaTOFrR0T_2arr0RGE6EA&s=10"
     },
-    {
-        id: 4,
-        name: "Dragon Fruit",
+
+    "Dragon Fruit": {
+        price: 25000,
+        category: "tropik",
         emoji: "🐉",
-        price: 25000,
-        category: "tropik",
-        image: "https://images.unsplash.com/photo-1527325678964-54921661f888?auto=format&fit=crop&w=700&q=80"
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaYz0JuWmpTrCb5LJp-ulVr31CFn54fgg7hPDYyS0cPw&s=10"
     },
-    {
-        id: 5,
-        name: "Shaftoli",
-        emoji: "🍑",
+
+    "Shaftoli": {
         price: 25000,
         category: "klassik",
-        image: "https://images.unsplash.com/photo-1629828874514-2d4e8e4e8c0b?auto=format&fit=crop&w=700&q=80"
-    },
-    {
-        id: 6,
-        name: "Junli Shaftoli",
         emoji: "🍑",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa-VJcD3chazgyn7NApZGdFdk8sOqrYPMQ0duWALqTcg&s=10"
+    },
+
+    "Junli Shaftoli": {
         price: 25000,
         category: "klassik",
-        image: "https://images.unsplash.com/photo-1609825480373-1c9c2b0a0b6b?auto=format&fit=crop&w=700&q=80"
-    },
-    {
-        id: 7,
-        name: "Oq Shaftoli",
         emoji: "🍑",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyeUHOZ9Z_YNFTc7CyNjpcHcba-tfMgUYKX2eSiHjITw&s=10"
+    },
+
+    "Oq Shaftoli": {
         price: 25000,
         category: "klassik",
-        image: "https://images.unsplash.com/photo-1629828874514-2d4e8e4e8c0b?auto=format&fit=crop&w=700&q=80"
-    },
-    {
-        id: 8,
-        name: "Anjir Shaftoli",
         emoji: "🍑",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtpAeg6r5co7Jc1SXfcfBffdLzQhTBBas5lGXtinAlMQ&s=10"
+    },
+
+    "Anjir Shaftoli": {
         price: 25000,
         category: "klassik",
-        image: "https://images.unsplash.com/photo-1609825480373-1c9c2b0a0b6b?auto=format&fit=crop&w=700&q=80"
+        emoji: "🍑",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWDl9toWP_njEz2POLSjr_D_-nDxID5H5paOVgAt571A&s=10"
     },
-    {
-        id: 9,
-        name: "Uzum",
-        emoji: "🍇",
+
+    "Uzum": {
         price: 30000,
         category: "rezavor",
-        image: "https://images.unsplash.com/photo-1537640538966-79f369143f8f?auto=format&fit=crop&w=700&q=80"
+        emoji: "🍇",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbWNKYijTYRxxCK421l1QE6xsoXEgTwd9SszRLMqP5HA&s=10"
     },
-    {
-        id: 10,
-        name: "Apelsin",
-        emoji: "🍊",
+
+    "Apelsin": {
         price: 30000,
-        category: "tropik",
-        image: "https://images.unsplash.com/photo-1547514701-42782101795e?auto=format&fit=crop&w=700&q=80"
+        category: "klassik",
+        emoji: "🍊",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt8PQI3eO88oJ2tnXRlejfErlfM9ID-u4TTj0eQj4wWQ&s=10"
     },
-    {
-        id: 11,
-        name: "Yashil olma",
-        emoji: "🍏",
+
+    "Yashil olma": {
         price: 25000,
         category: "klassik",
-        image: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=700&q=80"
+        emoji: "🍏",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqJOyD_k-I3WS4ofSU22VvnHlxya1xK_S_dRcS7H6bFQ&s=10"
     },
-    {
-        id: 12,
-        name: "Banan",
-        emoji: "🍌",
+
+    "Banan": {
         price: 20000,
         category: "tropik",
-        image: "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=700&q=80"
+        emoji: "🍌",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlEU6-yDO5bpkMXwBttnGBdcSlvMlcVzzJf4emP2xfZw&s=10"
     },
-    {
-        id: 13,
-        name: "Anjir",
-        emoji: "🫒",
+
+    "Anjir": {
         price: 25000,
         category: "klassik",
-        image: "https://images.unsplash.com/photo-1601379760883-1bb497c558b0?auto=format&fit=crop&w=700&q=80"
+        emoji: "🫒",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSm54Msm8hHbJXvg2YmK_l6xtfOgF0oanc96Izb3O28fw&s=10"
     },
-    {
-        id: 14,
-        name: "Nok",
-        emoji: "🍐",
+
+    "Nok": {
         price: 40000,
         category: "klassik",
-        image: "https://images.unsplash.com/photo-1514756331096-242fdeb70d4a?auto=format&fit=crop&w=700&q=80"
+        emoji: "🍐",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrZSuAyqeB8hE6cTdW-XX_mI6eDeOSDrUpuvTLK316UA&s=10"
     },
-    {
-        id: 15,
-        name: "Qulupnay",
-        emoji: "🍓",
+
+    "Qulupnay": {
         price: 100000,
         category: "rezavor",
-        image: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=700&q=80"
+        emoji: "🍓",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVxsVa8KMfARxzv8qqHpjHqq9dlsNH0HT6Q89wygSbQg&s=10"
     },
-    {
-        id: 16,
-        name: "Ananas",
+
+    "Ananas": {
+        price: 50000,
+        category: "tropik",
         emoji: "🍍",
-        price: 50000,
-        category: "tropik",
-        image: "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=700&q=80"
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdhRM2lYGQDQvaGK_sWcTWcti_xhVagAbVpXb76qVJig&s=10"
     },
-    {
-        id: 17,
-        name: "Laym",
-        emoji: "🍋",
+
+    "Laym": {
         price: 100000,
         category: "tropik",
-        image: "https://images.unsplash.com/photo-1582281298055-e25b84a30b0b?auto=format&fit=crop&w=700&q=80"
-    },
-    {
-        id: 18,
-        name: "Limon",
         emoji: "🍋",
-        price: 50000,
-        category: "tropik",
-        image: "https://images.unsplash.com/photo-1590502593747-42a996133562?auto=format&fit=crop&w=700&q=80"
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSysSQz8kOMviK-TWQOVnsYvFr1aCamfzVTnldI8J7Uhv0LA4wEqHnZFJWZ&s=10"
     },
-    {
-        id: 19,
-        name: "Golubika",
-        emoji: "🫐",
+
+    "Limon": {
+        price: 50000,
+        category: "klassik",
+        emoji: "🍋",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtgtHP6nLidikj3DAFL2YXWAdphpsGA02gdXA3U5_fHg&s=10"
+    },
+
+    "Golubika": {
         price: 40000,
         category: "rezavor",
-        image: "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?auto=format&fit=crop&w=700&q=80"
+        emoji: "🫐",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSG0k0gBaom4UfNF2aujKMl7P2CD37c9qZgHp09CN4Ydw&s=10"
     },
-    {
-        id: 20,
-        name: "Kiwi",
+
+    "Kiwi": {
+        price: 70000,
+        category: "tropik",
         emoji: "🥝",
-        price: 70000,
-        category: "tropik",
-        image: "https://images.unsplash.com/photo-1585059895524-72359e06133a?auto=format&fit=crop&w=700&q=80"
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShGcJ39EHXdiOhd0HhA8DYn1OTCKo3T2vYApxb-Tv4Lw&s=10"
     },
-    {
-        id: 21,
-        name: "Ejevika",
-        emoji: "🫐",
+
+    "Ejevika": {
         price: 70000,
         category: "rezavor",
-        image: "https://images.unsplash.com/photo-1522109691629-7d6d9d4f8b98?auto=format&fit=crop&w=700&q=80"
+        emoji: "🫐",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDSZVyW2akikaVUKK58JUtJuJDlWMbzpvvep-q588UtxWL-ZH4oDbfBIU&s=10"
     },
-    {
-        id: 22,
-        name: "Malina",
-        emoji: "🍓",
+
+    "Malina": {
         price: 100000,
         category: "rezavor",
-        image: "https://images.unsplash.com/photo-1577069861033-55d7da4dcfa2?auto=format&fit=crop&w=700&q=80"
+        emoji: "🍓",
+        image: "https://s0.rbk.ru/v6_top_pics/media/img/5/51/756590951624515.jpeg"
     },
-    {
-        id: 23,
-        name: "Mandarin",
-        emoji: "🍊",
+
+    "Mandarin": {
         price: 40000,
-        category: "tropik",
-        image: "https://images.unsplash.com/photo-1609424572698-04d9d2e04954?auto=format&fit=crop&w=700&q=80"
+        category: "klassik",
+        emoji: "🍊",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScigdaR_6LTGi0cmBFBtviUgxrbLxFPnnjSpUuw8k6UQ&s=10"
     },
-    {
-        id: 24,
-        name: "Kokos",
-        emoji: "🥥",
+
+    "Kokos": {
         price: 50000,
         category: "tropik",
-        image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=700&q=80"
+        emoji: "🥥",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUpzdbVzEUXtIQCrcNLvetAO4lww8V9dP_L-NGrl4emQ&s=10"
     },
-    {
-        id: 25,
-        name: "Avokado",
-        emoji: "🥑",
+
+    "Avokado": {
         price: 30000,
         category: "tropik",
-        image: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?auto=format&fit=crop&w=700&q=80"
+        emoji: "🥑",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlIb2Wt6jhFCASPdiAqjpdRxuxf4w09QVKuNes_PVLNA&s"
     },
-    {
-        id: 26,
-        name: "Olxo‘ri",
-        emoji: "🟣",
+
+    "Olxo‘ri": {
         price: 10000,
         category: "klassik",
-        image: "https://images.unsplash.com/photo-1596363505729-4190a9506133?auto=format&fit=crop&w=700&q=80"
+        emoji: "🟣",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtHcv7ESh2ODUzpUx_rrGMd6iGxFwvmqVjagQmXdu_Ag&s=10"
     }
-];
+};
 
 
-// ===============================
-// SAVATCHA
-// ===============================
+/* =========================================================
+🛒 SAVAT
+========================================================= */
 
 let cart = [];
 
 try {
-    cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+    cart =
+        JSON.parse(
+            localStorage.getItem(CART_KEY)
+        ) || [];
 } catch {
     cart = [];
 }
 
 
-// ===============================
-// TIL TANLASH
-// ===============================
+/* =========================================================
+🌐 TIL TANLASH
+========================================================= */
 
 function chooseLanguage(lang) {
-    if (!validLanguages.includes(lang)) return;
 
-    currentLanguage = lang;
-    localStorage.setItem(LANGUAGE_KEY, lang);
+    if (!translations[lang]) return;
 
-    const languageStep = document.getElementById("languageStep");
-    const themeStep = document.getElementById("themeStep");
+    localStorage.setItem(
+        LANGUAGE_KEY,
+        lang
+    );
+
+    const languageStep =
+        document.getElementById(
+            "languageStep"
+        );
+
+    const themeStep =
+        document.getElementById(
+            "themeStep"
+        );
 
     if (languageStep) {
-        languageStep.classList.add("hidden");
+        languageStep.classList.add(
+            "hidden"
+        );
     }
 
     if (themeStep) {
-        themeStep.classList.remove("hidden");
+        themeStep.classList.remove(
+            "hidden"
+        );
     }
 
     updateThemeTexts();
 }
 
 
-// ===============================
-// REJIM TANLASH
-// ===============================
+/* =========================================================
+☀️🌙 REJIM TANLASH
+========================================================= */
 
 function chooseTheme(theme) {
-    if (!validThemes.includes(theme)) return;
 
-    currentTheme = theme;
-    localStorage.setItem(THEME_KEY, theme);
+    if (
+        theme !== "light" &&
+        theme !== "dark"
+    ) return;
 
-    applyTheme();
+    localStorage.setItem(
+        THEME_KEY,
+        theme
+    );
+
+    document.body.classList.toggle(
+        "dark",
+        theme === "dark"
+    );
+
     applyLanguage();
 
-    const overlay = document.getElementById("setupOverlay");
+    const overlay =
+        document.getElementById(
+            "setupOverlay"
+        );
 
     if (overlay) {
         overlay.style.display = "none";
     }
-
-    document.body.classList.remove("setup-active");
 
     renderFruits();
     updateCart();
 }
 
 
-// ===============================
-// TEMA
-// ===============================
+/* =========================================================
+🎨 TEMA
+========================================================= */
 
 function applyTheme() {
-    if (currentTheme === "dark") {
-        document.body.classList.add("dark");
-    } else {
-        document.body.classList.remove("dark");
-    }
+
+    const theme =
+        localStorage.getItem(
+            THEME_KEY
+        );
+
+    document.body.classList.toggle(
+        "dark",
+        theme === "dark"
+    );
+
 }
 
 
-// ===============================
-// TEMA MATNLARI
-// ===============================
+/* =========================================================
+📝 TEMA MATNLARI
+========================================================= */
 
 function updateThemeTexts() {
-    const lang = translations[currentLanguage] || translations.uz;
 
-    const title = document.getElementById("themeTitle");
-    const description = document.getElementById("themeDescription");
-    const lightText = document.getElementById("lightText");
-    const darkText = document.getElementById("darkText");
+    const lang =
+        localStorage.getItem(
+            LANGUAGE_KEY
+        ) || "uz";
 
-    if (title) title.textContent = lang.themeTitle;
-    if (description) description.textContent = lang.themeDescription;
-    if (lightText) lightText.textContent = lang.light;
-    if (darkText) darkText.textContent = lang.dark;
+    const text =
+        translations[lang];
+
+    const title =
+        document.getElementById(
+            "themeTitle"
+        );
+
+    const description =
+        document.getElementById(
+            "themeDescription"
+        );
+
+    const lightText =
+        document.getElementById(
+            "lightText"
+        );
+
+    const darkText =
+        document.getElementById(
+            "darkText"
+        );
+
+    if (title) {
+        title.textContent =
+            text.themeTitle;
+    }
+
+    if (description) {
+        description.textContent =
+            text.themeDescription;
+    }
+
+    if (lightText) {
+        lightText.textContent =
+            text.light;
+    }
+
+    if (darkText) {
+        darkText.textContent =
+            text.dark;
+    }
+
 }
 
 
-// ===============================
-// TILNI SAYTGA QO‘LLASH
-// ===============================
+/* =========================================================
+🌐 SAYT TILI
+========================================================= */
 
 function applyLanguage() {
-    const lang = translations[currentLanguage] || translations.uz;
 
-    document.documentElement.lang = currentLanguage || "uz";
+    const lang =
+        localStorage.getItem(
+            LANGUAGE_KEY
+        ) || "uz";
 
-    document.querySelectorAll("[data-i18n]").forEach(element => {
-        const key = element.getAttribute("data-i18n");
+    const text =
+        translations[lang];
 
-        if (lang[key]) {
-            element.textContent = lang[key];
-        }
-    });
+    document.documentElement.lang =
+        lang;
 
-    const searchInput = document.getElementById("searchInput");
+    document
+        .querySelectorAll("[data-i18n]")
+        .forEach(function (element) {
 
-    if (searchInput) {
-        searchInput.placeholder = lang.search;
+            const key =
+                element.getAttribute(
+                    "data-i18n"
+                );
+
+            if (text[key]) {
+
+                element.textContent =
+                    text[key];
+
+            }
+
+        });
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        );
+
+    if (search) {
+
+        search.placeholder =
+            text.search;
+
     }
 
     updateThemeTexts();
+
 }
 
 
-// ===============================
-// SOZLAMALARNI QAYTA TANLASH
-// ===============================
+/* =========================================================
+⚙️ SOZLAMALARNI QAYTA TANLASH
+========================================================= */
 
 function resetSetup() {
-    localStorage.removeItem(LANGUAGE_KEY);
-    localStorage.removeItem(THEME_KEY);
 
-    currentLanguage = null;
-    currentTheme = null;
+    localStorage.removeItem(
+        LANGUAGE_KEY
+    );
 
-    const overlay = document.getElementById("setupOverlay");
-    const languageStep = document.getElementById("languageStep");
-    const themeStep = document.getElementById("themeStep");
+    localStorage.removeItem(
+        THEME_KEY
+    );
+
+    const overlay =
+        document.getElementById(
+            "setupOverlay"
+        );
+
+    const languageStep =
+        document.getElementById(
+            "languageStep"
+        );
+
+    const themeStep =
+        document.getElementById(
+            "themeStep"
+        );
+
+    document.body.classList.remove(
+        "dark"
+    );
 
     if (overlay) {
-        overlay.style.display = "flex";
+
+        overlay.style.display =
+            "flex";
+
     }
 
     if (languageStep) {
-        languageStep.classList.remove("hidden");
+
+        languageStep.classList.remove(
+            "hidden"
+        );
+
     }
 
     if (themeStep) {
-        themeStep.classList.add("hidden");
+
+        themeStep.classList.add(
+            "hidden"
+        );
+
     }
 
-    document.body.classList.remove("dark");
 }
 
 
-// ===============================
-// MEVALARNI CHIQARISH
-// ===============================
+/* =========================================================
+🍓 MEVALARNI CHIQARISH
+========================================================= */
 
-function renderFruits(list = fruits) {
-    const grid = document.getElementById("fruitGrid");
+function renderFruits() {
+
+    const grid =
+        document.getElementById(
+            "fruitGrid"
+        );
 
     if (!grid) return;
 
-    const lang = translations[currentLanguage] || translations.uz;
+    grid.innerHTML = "";
 
-    if (list.length === 0) {
-        grid.innerHTML = `
-            <div class="no-results">
-                <div>🍎</div>
-                <h3>${currentLanguage === "ru"
-                    ? "Фрукты не найдены"
-                    : currentLanguage === "en"
-                        ? "No fruits found"
-                        : "Meva topilmadi"
-                }</h3>
-            </div>
-        `;
-        return;
-    }
+    Object.entries(fruits).forEach(
+        function ([name, fruit]) {
 
-    grid.innerHTML = list.map(fruit => `
-        <article class="fruit-card">
-            <div class="fruit-image-wrap">
-                <img
-                    class="fruit-image"
-                    src="${fruit.image}"
-                    alt="${fruit.name}"
-                    loading="lazy"
-                    onerror="this.style.display='none'; this.parentElement.classList.add('image-error');"
-                >
-                <div class="fruit-emoji">${fruit.emoji}</div>
-            </div>
+            let categoryName =
+                "KLASSIK";
 
-            <div class="fruit-info">
-                <div class="fruit-category">
-                    ${getCategoryName(fruit.category)}
-                </div>
+            if (
+                fruit.category ===
+                "tropik"
+            ) {
 
-                <h3>${fruit.name}</h3>
+                categoryName =
+                    "TROPIK";
 
-                <div class="fruit-bottom">
-                    <strong>${formatMoney(fruit.price)}</strong>
+            }
 
-                    <button
-                        class="add-button"
-                        type="button"
-                        onclick="addToCart(${fruit.id})"
+            if (
+                fruit.category ===
+                "rezavor"
+            ) {
+
+                categoryName =
+                    "REZAVOR";
+
+            }
+
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+            card.className =
+                "fruit-item";
+
+            card.dataset.name =
+                name;
+
+            card.dataset.category =
+                fruit.category;
+
+            card.innerHTML = `
+
+                <div class="fruit-image">
+
+                    <img
+                        src="${fruit.image}"
+                        alt="${name}"
+                        loading="lazy"
                     >
-                        + ${lang.add}
-                    </button>
+
+                    <div class="fruit-image-badge">
+                        ${fruit.emoji}
+                    </div>
+
                 </div>
-            </div>
-        </article>
-    `).join("");
+
+                <div class="fruit-info">
+
+                    <span class="fruit-tag">
+                        ${categoryName}
+                    </span>
+
+                    <h3>
+                        ${name}
+                        <span>
+                            ${fruit.emoji}
+                        </span>
+                    </h3>
+
+                    <p>
+                        Yangi, sifatli va mazali
+                        ${name.toLowerCase()}.
+                    </p>
+
+                    <div class="fruit-bottom">
+
+                        <strong>
+                            ${formatPrice(
+                                fruit.price
+                            )} so'm
+                        </strong>
+
+                        <button
+                            type="button"
+                            class="add-fruit-button"
+                            data-fruit="${name}"
+                        >
+                            🛒
+                            <span>
+                                Savatchaga
+                            </span>
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+            const image =
+                card.querySelector(
+                    "img"
+                );
+
+            image.addEventListener(
+                "error",
+                function () {
+
+                    this.style.display =
+                        "none";
+
+                    const fallback =
+                        document.createElement(
+                            "div"
+                        );
+
+                    fallback.className =
+                        "fruit-image-fallback";
+
+                    fallback.textContent =
+                        fruit.emoji;
+
+                    this.parentElement
+                        .appendChild(
+                            fallback
+                        );
+
+                }
+            );
+
+            grid.appendChild(
+                card
+            );
+
+        }
+    );
+
 }
 
 
-// ===============================
-// KATEGORIYA NOMI
-// ===============================
+/* =========================================================
+🛒 MEVA QO‘SHISH
+========================================================= */
 
-function getCategoryName(category) {
-    const lang = translations[currentLanguage] || translations.uz;
+function addToCart(name) {
 
-    if (category === "tropik") return lang.tropical;
-    if (category === "rezavor") return lang.berry;
-    return lang.classic;
-}
+    if (!fruits[name]) return;
 
-
-// ===============================
-// PUL FORMAT
-// ===============================
-
-function formatMoney(number) {
-    return new Intl.NumberFormat("uz-UZ").format(number) + " so‘m";
-}
-
-
-// ===============================
-// SAVATCHAGA QO‘SHISH
-// ===============================
-
-function addToCart(id) {
-    const fruit = fruits.find(item => item.id === id);
-
-    if (!fruit) return;
-
-    const existing = cart.find(item => item.id === id);
+    const existing =
+        cart.find(
+            function (item) {
+                return item.name === name;
+            }
+        );
 
     if (existing) {
-        existing.quantity += 1;
+
+        existing.quantity++;
+
     } else {
+
         cart.push({
-            id: fruit.id,
-            name: fruit.name,
-            price: fruit.price,
-            emoji: fruit.emoji,
+
+            name: name,
+
+            price:
+                fruits[name].price,
+
+            emoji:
+                fruits[name].emoji,
+
+            image:
+                fruits[name].image,
+
             quantity: 1
+
         });
+
     }
 
     saveCart();
     updateCart();
 
-    const lang = translations[currentLanguage] || translations.uz;
+    showMessage(
+        "🛒",
+        name,
+        "Savatchaga qo‘shildi!"
+    );
 
-    showToast(`${fruit.emoji} ${fruit.name} ${lang.added}`);
 }
 
 
-// ===============================
-// CART SAQLASH
-// ===============================
+/* =========================================================
+💾 SAVATNI SAQLASH
+========================================================= */
 
 function saveCart() {
-    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+
+    localStorage.setItem(
+        CART_KEY,
+        JSON.stringify(cart)
+    );
+
 }
 
 
-// ===============================
-// CARTNI YANGILASH
-// ===============================
+/* =========================================================
+➕ MIQDOR
+========================================================= */
+
+function increaseQuantity(index) {
+
+    if (!cart[index]) return;
+
+    cart[index].quantity++;
+
+    saveCart();
+    updateCart();
+
+}
+
+
+/* =========================================================
+➖ MIQDOR
+========================================================= */
+
+function decreaseQuantity(index) {
+
+    if (!cart[index]) return;
+
+    if (
+        cart[index].quantity > 1
+    ) {
+
+        cart[index].quantity--;
+
+    } else {
+
+        cart.splice(
+            index,
+            1
+        );
+
+    }
+
+    saveCart();
+    updateCart();
+
+}
+
+
+/* =========================================================
+🗑️ O‘CHIRISH
+========================================================= */
+
+function removeFromCart(index) {
+
+    if (!cart[index]) return;
+
+    const name =
+        cart[index].name;
+
+    cart.splice(
+        index,
+        1
+    );
+
+    saveCart();
+    updateCart();
+
+    showMessage(
+        "🗑️",
+        name,
+        "Savatchadan olib tashlandi"
+    );
+
+}
+
+
+/* =========================================================
+🔄 SAVATNI YANGILASH
+========================================================= */
 
 function updateCart() {
-    const cartItems = document.getElementById("cartItems");
-    const cartCount = document.getElementById("cartCount");
-    const cartTotal = document.getElementById("cartTotal");
+
+    const cartItems =
+        document.getElementById(
+            "cartItems"
+        );
+
+    const cartCount =
+        document.getElementById(
+            "cartCount"
+        );
+
+    const cartTotal =
+        document.getElementById(
+            "cartTotal"
+        );
 
     if (!cartItems) return;
 
-    const lang = translations[currentLanguage] || translations.uz;
+    let count = 0;
+    let total = 0;
 
-    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-    const total = cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
+    cart.forEach(
+        function (item) {
+
+            count +=
+                item.quantity;
+
+            total +=
+                item.price *
+                item.quantity;
+
+        }
     );
 
     if (cartCount) {
-        cartCount.textContent = count;
+
+        cartCount.textContent =
+            count;
+
     }
 
     if (cartTotal) {
-        cartTotal.textContent = formatMoney(total);
+
+        cartTotal.textContent =
+            formatPrice(total) +
+            " so'm";
+
     }
 
     if (cart.length === 0) {
+
+        const lang =
+            localStorage.getItem(
+                LANGUAGE_KEY
+            ) || "uz";
+
         cartItems.innerHTML = `
+
             <div class="empty-cart">
-                <div>🛒</div>
-                <h3>${lang.emptyCart}</h3>
-                <p>${lang.chooseFruit}</p>
-            </div>
-        `;
-        return;
-    }
 
-    cartItems.innerHTML = cart.map(item => `
-        <div class="cart-item">
-            <div class="cart-item-icon">
-                ${item.emoji}
-            </div>
-
-            <div class="cart-item-info">
-                <h4>${item.name}</h4>
-                <strong>${formatMoney(item.price * item.quantity)}</strong>
-
-                <div class="quantity-controls">
-                    <button
-                        type="button"
-                        onclick="changeQuantity(${item.id}, -1)"
-                    >−</button>
-
-                    <span>${item.quantity}</span>
-
-                    <button
-                        type="button"
-                        onclick="changeQuantity(${item.id}, 1)"
-                    >+</button>
+                <div class="empty-cart-icon">
+                    🛒
                 </div>
+
+                <h3>
+                    ${translations[lang].emptyCart}
+                </h3>
+
+                <p>
+                    ${translations[lang].chooseFruit}
+                </p>
+
             </div>
 
-            <button
-                class="remove-item"
-                type="button"
-                onclick="removeFromCart(${item.id})"
-                title="Remove"
-            >
-                ✕
-            </button>
-        </div>
-    `).join("");
-}
+        `;
 
+        return;
 
-// ===============================
-// MIQDORNI O‘ZGARTIRISH
-// ===============================
-
-function changeQuantity(id, change) {
-    const item = cart.find(product => product.id === id);
-
-    if (!item) return;
-
-    item.quantity += change;
-
-    if (item.quantity <= 0) {
-        cart = cart.filter(product => product.id !== id);
     }
 
-    saveCart();
-    updateCart();
+    cartItems.innerHTML = "";
+
+    cart.forEach(
+        function (item, index) {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+            element.className =
+                "cart-item";
+
+            element.innerHTML = `
+
+                <div class="cart-item-image">
+
+                    <img
+                        src="${
+                            item.image ||
+                            fruits[item.name].image
+                        }"
+                        alt="${item.name}"
+                    >
+
+                </div>
+
+                <div class="cart-item-info">
+
+                    <h4>
+                        ${item.name}
+                    </h4>
+
+                    <p>
+                        ${formatPrice(
+                            item.price
+                        )} so'm
+                    </p>
+
+                    <div class="quantity-controls">
+
+                        <button
+                            type="button"
+                            onclick="decreaseQuantity(${index})"
+                        >
+                            −
+                        </button>
+
+                        <span>
+                            ${item.quantity}
+                        </span>
+
+                        <button
+                            type="button"
+                            onclick="increaseQuantity(${index})"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <strong class="cart-item-price">
+
+                    ${formatPrice(
+                        item.price *
+                        item.quantity
+                    )} so'm
+
+                </strong>
+
+                <button
+                    type="button"
+                    class="remove-item"
+                    onclick="removeFromCart(${index})"
+                >
+                    ×
+                </button>
+
+            `;
+
+            const image =
+                element.querySelector(
+                    "img"
+                );
+
+            image.addEventListener(
+                "error",
+                function () {
+
+                    this.outerHTML =
+                        `<span class="cart-fallback">
+                            ${item.emoji}
+                        </span>`;
+
+                }
+            );
+
+            cartItems.appendChild(
+                element
+            );
+
+        }
+    );
+
 }
 
 
-// ===============================
-// CARTDAN O‘CHIRISH
-// ===============================
+/* =========================================================
+🔢 SAVAT SONI
+========================================================= */
 
-function removeFromCart(id) {
-    cart = cart.filter(item => item.id !== id);
+function getCartCount() {
 
-    saveCart();
-    updateCart();
+    let count = 0;
+
+    cart.forEach(
+        function (item) {
+
+            count +=
+                item.quantity;
+
+        }
+    );
+
+    return count;
+
 }
 
 
-// ===============================
-// CART OCHISH/YOPISH
-// ===============================
+/* =========================================================
+💰 JAMI
+========================================================= */
 
-function toggleCart(force) {
-    const panel = document.getElementById("cartPanel");
-    const overlay = document.getElementById("cartOverlay");
+function getCartTotalNumber() {
+
+    let total = 0;
+
+    cart.forEach(
+        function (item) {
+
+            total +=
+                item.price *
+                item.quantity;
+
+        }
+    );
+
+    return total;
+
+}
+
+
+/* =========================================================
+💰 NARX FORMAT
+========================================================= */
+
+function formatPrice(number) {
+
+    return Math.round(
+        Number(number)
+    ).toLocaleString(
+        "uz-UZ"
+    );
+
+}
+
+
+/* =========================================================
+🛒 CART PANEL
+========================================================= */
+
+function toggleCart() {
+
+    const panel =
+        document.getElementById(
+            "cartPanel"
+        );
+
+    const overlay =
+        document.getElementById(
+            "cartOverlay"
+        );
 
     if (!panel) return;
 
-    const isOpen = document.body.classList.contains("cart-open");
-
-    const shouldOpen =
-        typeof force === "boolean"
-            ? force
-            : !isOpen;
-
-    document.body.classList.toggle("cart-open", shouldOpen);
-
-    if (panel) {
-        panel.classList.toggle("open", shouldOpen);
-    }
+    panel.classList.toggle(
+        "active"
+    );
 
     if (overlay) {
-        overlay.classList.toggle("open", shouldOpen);
+
+        overlay.classList.toggle(
+            "active"
+        );
+
     }
+
 }
 
 
-// ===============================
-// QIDIRUV
-// ===============================
+/* =========================================================
+🔍 QIDIRUV
+========================================================= */
 
-function searchFruits() {
-    const input = document.getElementById("searchInput");
+function setupSearch() {
+
+    const input =
+        document.getElementById(
+            "searchInput"
+        );
 
     if (!input) return;
 
-    const query = input.value.toLowerCase().trim();
-
-    let filtered = fruits;
-
-    if (currentCategory !== "all") {
-        filtered = filtered.filter(
-            fruit => fruit.category === currentCategory
-        );
-    }
-
-    if (query) {
-        filtered = filtered.filter(
-            fruit =>
-                fruit.name.toLowerCase().includes(query)
-        );
-    }
-
-    renderFruits(filtered);
-}
-
-
-// ===============================
-// KATEGORIYA FILTER
-// ===============================
-
-function filterFruits(category, button) {
-    currentCategory = category;
-
-    document.querySelectorAll(".category").forEach(btn => {
-        btn.classList.remove("active");
-    });
-
-    if (button) {
-        button.classList.add("active");
-    }
-
-    searchFruits();
-}
-
-
-// ===============================
-// MEVALAR BO‘LIMIGA O‘TISH
-// ===============================
-
-function showFruits() {
-    const section = document.getElementById("mevalar");
-
-    if (section) {
-        section.scrollIntoView({
-            behavior: "smooth"
-        });
-    }
-}
-
-
-// ===============================
-// TOAST
-// ===============================
-
-function showToast(message) {
-    const oldToast = document.querySelector(".meva-toast");
-
-    if (oldToast) {
-        oldToast.remove();
-    }
-
-    const toast = document.createElement("div");
-
-    toast.className = "meva-toast";
-    toast.textContent = message;
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-        toast.classList.add("show");
-    }, 10);
-
-    setTimeout(() => {
-        toast.classList.remove("show");
-
-        setTimeout(() => {
-            toast.remove();
-        }, 300);
-    }, 2200);
-}
-
-
-// ===============================
-// BUYURTMA
-// ===============================
-
-async function checkout() {
-    const lang = translations[currentLanguage] || translations.uz;
-
-    if (cart.length === 0) {
-        showToast(`🛒 ${lang.cartEmpty}`);
-        return;
-    }
-
-    const name = prompt(lang.namePrompt);
-
-    if (!name) {
-        showToast(lang.cancelled);
-        return;
-    }
-
-    const phone = prompt(lang.phonePrompt);
-
-    if (!phone) {
-        showToast(lang.cancelled);
-        return;
-    }
-
-    const address = prompt(lang.addressPrompt);
-
-    if (!address) {
-        showToast(lang.cancelled);
-        return;
-    }
-
-    const total = cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
+    input.addEventListener(
+        "input",
+        searchFruits
     );
 
+}
+
+
+function searchFruits() {
+
+    const input =
+        document.getElementById(
+            "searchInput"
+        );
+
+    if (!input) return;
+
+    const search =
+        input.value
+            .toLowerCase()
+            .trim();
+
+    document
+        .querySelectorAll(
+            ".fruit-item"
+        )
+        .forEach(
+            function (card) {
+
+                const name =
+                    card.dataset.name
+                        .toLowerCase();
+
+                if (
+                    name.includes(
+                        search
+                    )
+                ) {
+
+                    card.classList.remove(
+                        "hidden"
+                    );
+
+                } else {
+
+                    card.classList.add(
+                        "hidden"
+                    );
+
+                }
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+🏷️ KATEGORIYA
+========================================================= */
+
+function setupCategoryButtons() {
+
+    document
+        .querySelectorAll(
+            ".category"
+        )
+        .forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const category =
+                            button.dataset.category;
+
+                        filterFruits(
+                            category,
+                            button
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+}
+
+
+function filterFruits(
+    category,
+    button
+) {
+
+    document
+        .querySelectorAll(
+            ".category"
+        )
+        .forEach(
+            function (btn) {
+
+                btn.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+    if (button) {
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+    document
+        .querySelectorAll(
+            ".fruit-item"
+        )
+        .forEach(
+            function (card) {
+
+                if (
+                    category === "all" ||
+                    card.dataset.category ===
+                    category
+                ) {
+
+                    card.classList.remove(
+                        "hidden"
+                    );
+
+                } else {
+
+                    card.classList.add(
+                        "hidden"
+                    );
+
+                }
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+🍓 MEVALARGA O‘TISH
+========================================================= */
+
+function showFruits() {
+
+    const section =
+        document.getElementById(
+            "mevalar"
+        );
+
+    if (!section) return;
+
+    section.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+}
+
+
+/* =========================================================
+🔔 XABAR
+========================================================= */
+
+function showMessage(
+    icon,
+    title,
+    text
+) {
+
+    const old =
+        document.querySelector(
+            ".fruit-message"
+        );
+
+    if (old) {
+        old.remove();
+    }
+
+    const message =
+        document.createElement(
+            "div"
+        );
+
+    message.className =
+        "fruit-message";
+
+    message.innerHTML = `
+
+        <div class="message-icon">
+            ${icon}
+        </div>
+
+        <div>
+
+            <strong>
+                ${title}
+            </strong>
+
+            <p>
+                ${text}
+            </p>
+
+        </div>
+
+    `;
+
+    document.body.appendChild(
+        message
+    );
+
+    setTimeout(
+        function () {
+
+            message.classList.add(
+                "message-show"
+            );
+
+        },
+        50
+    );
+
+    setTimeout(
+        function () {
+
+            message.classList.remove(
+                "message-show"
+            );
+
+            setTimeout(
+                function () {
+
+                    message.remove();
+
+                },
+                400
+            );
+
+        },
+        2200
+    );
+
+}
+
+
+/* =========================================================
+📦 BUYURTMA
+========================================================= */
+
+function checkout() {
+
+    if (cart.length === 0) {
+
+        showMessage(
+            "🛒",
+            "Savatcha bo‘sh",
+            "Avval meva tanlang!"
+        );
+
+        return;
+
+    }
+
+    if (
+        document.getElementById(
+            "orderModal"
+        )
+    ) return;
+
+    const modal =
+        document.createElement(
+            "div"
+        );
+
+    modal.id =
+        "orderModal";
+
+    modal.innerHTML = `
+
+        <div
+            class="order-modal-overlay"
+            onclick="closeOrderModal()"
+        ></div>
+
+        <div class="order-modal">
+
+            <button
+                type="button"
+                class="order-close"
+                onclick="closeOrderModal()"
+            >
+                ✕
+            </button>
+
+            <div class="order-icon">
+                🍓
+            </div>
+
+            <h2>
+                Buyurtma berish
+            </h2>
+
+            <p class="order-subtitle">
+                Yetkazib berish ma'lumotlarini kiriting
+            </p>
+
+            <form id="orderForm">
+
+                <label>
+                    👤 Ism-familiya
+                </label>
+
+                <input
+                    type="text"
+                    id="customerName"
+                    placeholder="Ism va familiyangiz"
+                    required
+                >
+
+                <label>
+                    📞 Telefon raqami
+                </label>
+
+                <input
+                    type="tel"
+                    id="customerPhone"
+                    placeholder="+998 90 123 45 67"
+                    required
+                >
+
+                <label>
+                    📍 Yetkazib berish manzili
+                </label>
+
+                <textarea
+                    id="customerAddress"
+                    placeholder="Viloyat, shahar/tuman, ko‘cha, uy..."
+                    rows="3"
+                    required
+                ></textarea>
+
+                <label>
+                    📝 Qo‘shimcha izoh
+                    <span>(ixtiyoriy)</span>
+                </label>
+
+                <textarea
+                    id="customerComment"
+                    placeholder="Masalan: eshik oldiga qoldiring..."
+                    rows="2"
+                ></textarea>
+
+                <label>
+                    🕐 Yetkazib berish vaqti
+                </label>
+
+                <input
+                    type="time"
+                    id="deliveryTime"
+                    required
+                >
+
+                <div class="order-summary">
+
+                    <div>
+                        <span>
+                            Mahsulotlar:
+                        </span>
+
+                        <strong>
+                            ${getCartCount()} ta
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>
+                            Jami:
+                        </span>
+
+                        <strong>
+                            ${formatPrice(
+                                getCartTotalNumber()
+                            )} so'm
+                        </strong>
+                    </div>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="confirm-order-button"
+                >
+                    ✅ Buyurtmani tasdiqlash
+                </button>
+
+            </form>
+
+        </div>
+    `;
+
+    document.body.appendChild(
+        modal
+    );
+
+    setTimeout(
+        function () {
+            modal.classList.add(
+                "show"
+            );
+        },
+        20
+    );
+
+    const form =
+        document.getElementById(
+            "orderForm"
+        );
+
+    if (form) {
+
+        form.addEventListener(
+            "submit",
+            submitOrder
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+❌ BUYURTMA OYNASINI YOPISH
+========================================================= */
+
+function closeOrderModal() {
+
+    const modal =
+        document.getElementById(
+            "orderModal"
+        );
+
+    if (!modal) return;
+
+    modal.classList.remove(
+        "show"
+    );
+
+    setTimeout(
+        function () {
+
+            modal.remove();
+
+        },
+        300
+    );
+
+}
+
+
+/* =========================================================
+📦 GOOGLE APPS SCRIPT
+========================================================= */
+
+const GOOGLE_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbx7qy39x0JiSHzvCPFc5pY5aFtROnmN0tCEmhnOzSHvNQwrosTUZd4MeHxJakcFSfZ/exec";
+
+
+async function submitOrder(event) {
+
+    event.preventDefault();
+
+    if (cart.length === 0) {
+
+        alert(
+            "🛒 Savatcha bo‘sh!"
+        );
+
+        return;
+
+    }
+
+    const name =
+        document.getElementById(
+            "customerName"
+        ).value.trim();
+
+    const phone =
+        document.getElementById(
+            "customerPhone"
+        ).value.trim();
+
+    const address =
+        document.getElementById(
+            "customerAddress"
+        ).value.trim();
+
+    const comment =
+        document.getElementById(
+            "customerComment"
+        ).value.trim();
+
+    const deliveryTime =
+        document.getElementById(
+            "deliveryTime"
+        ).value;
+
+    if (
+        !name ||
+        !phone ||
+        !address ||
+        !deliveryTime
+    ) {
+
+        alert(
+            "⚠️ Kerakli ma'lumotlarni kiriting!"
+        );
+
+        return;
+
+    }
+
+    const products =
+        cart.map(
+            function (item) {
+
+                return {
+
+                    name:
+                        item.name,
+
+                    quantity:
+                        item.quantity,
+
+                    price:
+                        item.price,
+
+                    total:
+                        item.price *
+                        item.quantity
+
+                };
+
+            }
+        );
+
+    const total =
+        getCartTotalNumber();
+
     const orderData = {
-        name: name.trim(),
-        phone: phone.trim(),
-        address: address.trim(),
 
-        items: cart.map(item => ({
-            name: item.name,
-            quantity: item.quantity,
-            price: item.price
-        })),
+        name:
+            name,
 
-        total: total,
-        discount: 0,
-        promoCode: ""
+        phone:
+            phone,
+
+        address:
+            address,
+
+        comment:
+            comment,
+
+        deliveryTime:
+            deliveryTime,
+
+        products:
+            products,
+
+        productsText:
+            products
+                .map(
+                    function (item) {
+
+                        return (
+                            item.name +
+                            " × " +
+                            item.quantity +
+                            " = " +
+                            formatPrice(
+                                item.total
+                            ) +
+                            " so'm"
+                        );
+
+                    }
+                )
+                .join("\n"),
+
+        productCount:
+            getCartCount(),
+
+        subtotal:
+            total,
+
+        discount:
+            0,
+
+        total:
+            total,
+
+        promo:
+            "",
+
+        date:
+            new Date().toLocaleString(
+                "uz-UZ"
+            )
+
     };
 
+    const button =
+        event.target.querySelector(
+            ".confirm-order-button"
+        );
 
-    // Google Apps Script
-    const SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbx7qy39x0JiSHzvCPFc5pY5aFtROnmN0tCEmhnOzSHvNQwrosTUZd4MeHxJakcFSfZ/exec";
+    if (button) {
+
+        button.disabled =
+            true;
+
+        button.textContent =
+            "⏳ Yuborilmoqda...";
+
+    }
 
     try {
-        await fetch(SCRIPT_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: {
-                "Content-Type": "text/plain;charset=utf-8"
-            },
-            body: JSON.stringify(orderData)
-        });
 
-        showToast(lang.orderSent);
+        await fetch(
+            GOOGLE_SCRIPT_URL,
+            {
+
+                method: "POST",
+
+                mode: "no-cors",
+
+                headers: {
+
+                    "Content-Type":
+                        "text/plain;charset=utf-8"
+
+                },
+
+                body:
+                    JSON.stringify(
+                        orderData
+                    )
+
+            }
+        );
+
+        alert(
+            "✅ Buyurtmangiz qabul qilindi!\n\n" +
+            "👤 " + name + "\n" +
+            "📞 " + phone + "\n" +
+            "📍 " + address + "\n" +
+            "🕐 " + deliveryTime + "\n\n" +
+            "🛒 Mahsulotlar: " +
+            getCartCount() +
+            " ta\n" +
+            "💰 Jami: " +
+            formatPrice(total) +
+            " so'm"
+        );
 
         cart = [];
 
         saveCart();
+
         updateCart();
 
-        setTimeout(() => {
-            toggleCart(false);
-        }, 800);
+        closeOrderModal();
 
     } catch (error) {
-        console.error(error);
-        showToast(lang.orderError);
+
+        console.error(
+            "BUYURTMA XATOSI:",
+            error
+        );
+
+        alert(
+            "❌ Buyurtma yuborishda xatolik yuz berdi."
+        );
+
+        if (button) {
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "✅ Buyurtmani tasdiqlash";
+
+        }
+
     }
+
 }
 
 
-// ===============================
-// SAYT ISHGA TUSHGANDA
-// ===============================
+/* =========================================================
+🚀 SAYT ISHGA TUSHISHI
+========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    // Tema bor bo‘lsa qo‘llaymiz
-    if (currentTheme) {
         applyTheme();
+
+        const language =
+            localStorage.getItem(
+                LANGUAGE_KEY
+            );
+
+        const theme =
+            localStorage.getItem(
+                THEME_KEY
+            );
+
+        const overlay =
+            document.getElementById(
+                "setupOverlay"
+            );
+
+        const languageStep =
+            document.getElementById(
+                "languageStep"
+            );
+
+        const themeStep =
+            document.getElementById(
+                "themeStep"
+            );
+
+        /* TIL TANLANMAGAN */
+
+        if (!language) {
+
+            if (overlay) {
+                overlay.style.display =
+                    "flex";
+            }
+
+            if (languageStep) {
+                languageStep.classList.remove(
+                    "hidden"
+                );
+            }
+
+            if (themeStep) {
+                themeStep.classList.add(
+                    "hidden"
+                );
+            }
+
+        }
+
+        /* TIL BOR, REJIM YO‘Q */
+
+        else if (!theme) {
+
+            if (overlay) {
+                overlay.style.display =
+                    "flex";
+            }
+
+            if (languageStep) {
+                languageStep.classList.add(
+                    "hidden"
+                );
+            }
+
+            if (themeStep) {
+                themeStep.classList.remove(
+                    "hidden"
+                );
+            }
+
+            updateThemeTexts();
+
+        }
+
+        /* TIL VA REJIM BOR */
+
+        else {
+
+            if (overlay) {
+                overlay.style.display =
+                    "none";
+            }
+
+            applyLanguage();
+
+        }
+
+        renderFruits();
+
+        updateCart();
+
+        setupSearch();
+
+        setupNavbar();
+
+        startScrollAnimation();
+
     }
+);
 
-    // Til bor bo‘lsa qo‘llaymiz
-    if (currentLanguage) {
-        applyLanguage();
-    }
 
-    const overlay = document.getElementById("setupOverlay");
-    const languageStep = document.getElementById("languageStep");
-    const themeStep = document.getElementById("themeStep");
+/* =========================================================
+🧭 NAVBAR
+========================================================= */
 
-    // Hech narsa tanlanmagan
-    if (!currentLanguage) {
+function setupNavbar() {
 
-        if (overlay) {
-            overlay.style.display = "flex";
+    window.addEventListener(
+        "scroll",
+        function () {
+
+            const navbar =
+                document.querySelector(
+                    ".navbar"
+                );
+
+            if (!navbar) return;
+
+            if (
+                window.scrollY > 50
+            ) {
+
+                navbar.classList.add(
+                    "navbar-scrolled"
+                );
+
+            } else {
+
+                navbar.classList.remove(
+                    "navbar-scrolled"
+                );
+
+            }
+
         }
+    );
 
-        if (languageStep) {
-            languageStep.classList.remove("hidden");
-        }
+}
 
-        if (themeStep) {
-            themeStep.classList.add("hidden");
-        }
+
+/* =========================================================
+✨ SCROLL ANIMATION
+========================================================= */
+
+function startScrollAnimation() {
+
+    const elements =
+        document.querySelectorAll(
+            ".fruit-item, .about-visual, .about-text, .stats"
+        );
+
+    if (
+        !("IntersectionObserver" in window)
+    ) {
+
+        elements.forEach(
+            function (element) {
+
+                element.classList.add(
+                    "show-animation"
+                );
+
+            }
+        );
 
         return;
+
     }
 
-    // Til tanlangan, lekin rejim tanlanmagan
-    if (!currentTheme) {
+    const observer =
+        new IntersectionObserver(
+            function (entries) {
 
-        if (overlay) {
-            overlay.style.display = "flex";
+                entries.forEach(
+                    function (entry) {
+
+                        if (
+                            entry.isIntersecting
+                        ) {
+
+                            entry.target.classList.add(
+                                "show-animation"
+                            );
+
+                        }
+
+                    }
+                );
+
+            },
+            {
+                threshold: 0.15
+            }
+        );
+
+    elements.forEach(
+        function (element) {
+
+            observer.observe(
+                element
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+⌨️ ESC
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeOrderModal();
+
         }
 
-        if (languageStep) {
-            languageStep.classList.add("hidden");
-        }
-
-        if (themeStep) {
-            themeStep.classList.remove("hidden");
-        }
-
-        updateThemeTexts();
-        return;
     }
+);
 
-    // Hammasi tanlangan — saytga kiramiz
-    if (overlay) {
-        overlay.style.display = "none";
+
+/* =========================================================
+🖱️ BUTTON ANIMATION
+========================================================= */
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        const button =
+            event.target.closest(
+                "button"
+            );
+
+        if (!button) return;
+
+        button.classList.add(
+            "button-click"
+        );
+
+        setTimeout(
+            function () {
+
+                button.classList.remove(
+                    "button-click"
+                );
+
+            },
+            250
+        );
+
     }
+);
 
-    renderFruits();
-    updateCart();
-});
+
+/* =========================================================
+🍓 MEVA MIX
+========================================================= */
+
+console.log(
+    "%c🍓 MEVA MIX — READY!",
+    "font-size:22px;font-weight:bold;"
+);
