@@ -1,19 +1,35 @@
-"use strict";
+// ===============================
+// MEVA MIX 🍓 — SCRIPT.JS
+// ===============================
 
-/* =========================
-   MEVA MIX
-========================= */
+const LANGUAGE_KEY = "mevaMixLanguage";
+const THEME_KEY = "mevaMixTheme";
+const CART_KEY = "mevaMixCart";
 
-const GOOGLE_SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbx7qy39x0JiSHzvCPFc5pY5aFtROnmN0tCEmhnOzSHvNQwrosTUZd4MeHxJakcFSfZ/exec";
+const validLanguages = ["uz", "ru", "en"];
+const validThemes = ["light", "dark"];
+
+let currentLanguage = localStorage.getItem(LANGUAGE_KEY);
+let currentTheme = localStorage.getItem(THEME_KEY);
+let currentCategory = "all";
+
+// Noto'g'ri eski qiymatlar bo'lsa tozalaymiz
+if (!validLanguages.includes(currentLanguage)) {
+    currentLanguage = null;
+    localStorage.removeItem(LANGUAGE_KEY);
+}
+
+if (!validThemes.includes(currentTheme)) {
+    currentTheme = null;
+    localStorage.removeItem(THEME_KEY);
+}
 
 
-/* =========================
-   TILLAR
-========================= */
+// ===============================
+// TARJIMALAR
+// ===============================
 
 const translations = {
-
     uz: {
         home: "Bosh sahifa",
         fruits: "Mevalar",
@@ -23,9 +39,10 @@ const translations = {
         heroSmall: "TABIIY • YANGI • MAZALI",
         heroTitle1: "Har kuni",
         heroTitle2: "yangi meva.",
-        heroText: "Meva Mix — eng sara va yangi mevalarni bir joyga jamlagan zamonaviy meva do‘koni.",
-        viewFruits: "Mevalarni ko‘rish",
+        heroText:
+            "Meva Mix — eng sara va yangi mevalarni bir joyga jamlagan zamonaviy meva do‘koni. Mazali, tabiiy va sifatli mevalar siz uchun.",
 
+        viewFruits: "Mevalarni ko‘rish",
         natural: "Tabiiy mahsulot",
         types: "Meva turi",
         clients: "Mamnun mijoz",
@@ -36,6 +53,7 @@ const translations = {
         fruitsTitle: "mevalar.",
         allFruits: "Barchasini ko‘rish →",
 
+        search: "🔍 Meva qidiring...",
         all: "Barchasi",
         tropical: "Tropik",
         berry: "Rezavor",
@@ -44,7 +62,8 @@ const translations = {
         aboutSmall: "MEVA MIX HAQIDA",
         aboutTitle1: "Meva tanlash",
         aboutTitle2: "endi oson.",
-        aboutText: "Biz har kuni eng sifatli va yangi mevalarni tanlab, sizga yetkazishga harakat qilamiz.",
+        aboutText:
+            "Biz har kuni eng sifatli va yangi mevalarni tanlab, sizga yetkazishga harakat qilamiz.",
 
         fresh: "Yangi mevalar",
         naturalProduct: "Tabiiy mahsulot",
@@ -56,8 +75,25 @@ const translations = {
         total: "Jami:",
         order: "Buyurtma berish",
 
+        add: "Savatchaga qo‘shish",
+        quantity: "Miqdor",
+
+        themeTitle: "Rejimni tanlang",
+        themeDescription: "Sayt ko‘rinishini tanlang",
+        light: "Oq rejim",
+        dark: "Qorong‘i rejim",
+
         footerText: "Har kuni yangi meva, har kuni yaxshi kayfiyat! ❤️",
-        rights: "Barcha huquqlar himoyalangan."
+        rights: "Barcha huquqlar himoyalangan.",
+
+        added: "savatchaga qo‘shildi!",
+        cartEmpty: "Avval savatchaga meva qo‘shing.",
+        namePrompt: "Ismingiz:",
+        phonePrompt: "Telefon raqamingiz:",
+        addressPrompt: "Manzilingiz:",
+        orderSent: "Buyurtmangiz yuborildi! 🎉",
+        orderError: "Buyurtma yuborishda xatolik yuz berdi.",
+        cancelled: "Buyurtma bekor qilindi."
     },
 
     ru: {
@@ -66,13 +102,14 @@ const translations = {
         about: "О нас",
         cart: "Корзина",
 
-        heroSmall: "НАТУРАЛЬНО • СВЕЖО • ВКУСНО",
+        heroSmall: "НАТУРАЛЬНЫЕ • СВЕЖИЕ • ВКУСНЫЕ",
         heroTitle1: "Каждый день",
         heroTitle2: "свежие фрукты.",
-        heroText: "Meva Mix — современный магазин, где собраны самые свежие и качественные фрукты.",
-        viewFruits: "Посмотреть фрукты",
+        heroText:
+            "Meva Mix — современный фруктовый магазин с самыми свежими и качественными фруктами.",
 
-        natural: "Натуральные продукты",
+        viewFruits: "Посмотреть фрукты",
+        natural: "Натуральный продукт",
         types: "Видов фруктов",
         clients: "Довольных клиентов",
         service: "Сервис",
@@ -82,6 +119,7 @@ const translations = {
         fruitsTitle: "фрукты.",
         allFruits: "Посмотреть все →",
 
+        search: "🔍 Найти фрукт...",
         all: "Все",
         tropical: "Тропические",
         berry: "Ягодные",
@@ -90,7 +128,8 @@ const translations = {
         aboutSmall: "О MEVA MIX",
         aboutTitle1: "Выбирать фрукты",
         aboutTitle2: "теперь легко.",
-        aboutText: "Каждый день мы выбираем качественные и свежие фрукты для вас.",
+        aboutText:
+            "Каждый день мы выбираем самые качественные и свежие фрукты для вас.",
 
         fresh: "Свежие фрукты",
         naturalProduct: "Натуральные продукты",
@@ -98,12 +137,29 @@ const translations = {
         quality: "Гарантия качества",
 
         emptyCart: "Корзина пуста",
-        chooseFruit: "Выберите любой фрукт 🍎",
+        chooseFruit: "Выберите один из фруктов 🍎",
         total: "Итого:",
         order: "Оформить заказ",
 
-        footerText: "Свежие фрукты каждый день! ❤️",
-        rights: "Все права защищены."
+        add: "Добавить в корзину",
+        quantity: "Количество",
+
+        themeTitle: "Выберите режим",
+        themeDescription: "Выберите внешний вид сайта",
+        light: "Светлый режим",
+        dark: "Тёмный режим",
+
+        footerText: "Свежие фрукты каждый день и хорошее настроение! ❤️",
+        rights: "Все права защищены.",
+
+        added: "добавлен в корзину!",
+        cartEmpty: "Сначала добавьте фрукт в корзину.",
+        namePrompt: "Ваше имя:",
+        phonePrompt: "Ваш номер телефона:",
+        addressPrompt: "Ваш адрес:",
+        orderSent: "Ваш заказ отправлен! 🎉",
+        orderError: "Произошла ошибка при отправке заказа.",
+        cancelled: "Заказ отменён."
     },
 
     en: {
@@ -112,15 +168,16 @@ const translations = {
         about: "About us",
         cart: "Cart",
 
-        heroSmall: "NATURAL • FRESH • TASTY",
-        heroTitle1: "Every day",
-        heroTitle2: "fresh fruit.",
-        heroText: "Meva Mix is a modern fruit shop with the freshest and highest-quality fruits.",
-        viewFruits: "View fruits",
+        heroSmall: "NATURAL • FRESH • DELICIOUS",
+        heroTitle1: "Fresh",
+        heroTitle2: "every day.",
+        heroText:
+            "Meva Mix is a modern fruit store with fresh, delicious and high-quality fruits for you.",
 
+        viewFruits: "View fruits",
         natural: "Natural products",
         types: "Fruit types",
-        clients: "Happy customers",
+        clients: "Happy clients",
         service: "Service",
 
         ourFruits: "OUR FRUITS",
@@ -128,6 +185,7 @@ const translations = {
         fruitsTitle: "fruits.",
         allFruits: "View all →",
 
+        search: "🔍 Search fruit...",
         all: "All",
         tropical: "Tropical",
         berry: "Berries",
@@ -136,624 +194,627 @@ const translations = {
         aboutSmall: "ABOUT MEVA MIX",
         aboutTitle1: "Choosing fruit",
         aboutTitle2: "is now easy.",
-        aboutText: "Every day we select high-quality and fresh fruits for you.",
+        aboutText:
+            "Every day we choose the freshest and highest-quality fruits for you.",
 
         fresh: "Fresh fruits",
         naturalProduct: "Natural products",
         fast: "Fast service",
         quality: "Quality guarantee",
 
-        emptyCart: "Cart is empty",
-        chooseFruit: "Choose a fruit 🍎",
+        emptyCart: "Your cart is empty",
+        chooseFruit: "Choose some fruit 🍎",
         total: "Total:",
         order: "Place order",
 
-        footerText: "Fresh fruit every day! ❤️",
-        rights: "All rights reserved."
+        add: "Add to cart",
+        quantity: "Quantity",
+
+        themeTitle: "Choose a mode",
+        themeDescription: "Choose the website appearance",
+        light: "Light mode",
+        dark: "Dark mode",
+
+        footerText: "Fresh fruit every day, better mood every day! ❤️",
+        rights: "All rights reserved.",
+
+        added: "added to cart!",
+        cartEmpty: "Add some fruit to the cart first.",
+        namePrompt: "Your name:",
+        phonePrompt: "Your phone number:",
+        addressPrompt: "Your address:",
+        orderSent: "Your order has been sent! 🎉",
+        orderError: "There was an error sending the order.",
+        cancelled: "Order cancelled."
     }
 };
 
 
-let currentLanguage =
-    localStorage.getItem("mevaMixLanguage") || null;
+// ===============================
+// MEVALAR
+// ===============================
 
-let currentTheme =
-    localStorage.getItem("mevaMixTheme") || null;
-
-
-/* =========================
-   MEVALAR
-========================= */
-
-const fruits = {
-
-    "Tarvuz": {
+const fruits = [
+    {
+        id: 1,
+        name: "Tarvuz",
+        emoji: "🍉",
         price: 5000,
         category: "klassik",
-        emoji: "🍉",
         image: "https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Qovun": {
+    {
+        id: 2,
+        name: "Qovun",
+        emoji: "🍈",
         price: 8000,
         category: "klassik",
-        emoji: "🍈",
         image: "https://images.unsplash.com/photo-1570197788417-0e82375c9371?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Mango": {
+    {
+        id: 3,
+        name: "Mango",
+        emoji: "🥭",
         price: 20000,
         category: "tropik",
-        emoji: "🥭",
         image: "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Dragon Fruit": {
+    {
+        id: 4,
+        name: "Dragon Fruit",
+        emoji: "🐉",
         price: 25000,
         category: "tropik",
-        emoji: "🐉",
         image: "https://images.unsplash.com/photo-1527325678964-54921661f888?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Shaftoli": {
+    {
+        id: 5,
+        name: "Shaftoli",
+        emoji: "🍑",
         price: 25000,
         category: "klassik",
-        emoji: "🍑",
         image: "https://images.unsplash.com/photo-1629828874514-2d4e8e4e8c0b?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Junli Shaftoli": {
+    {
+        id: 6,
+        name: "Junli Shaftoli",
+        emoji: "🍑",
         price: 25000,
         category: "klassik",
-        emoji: "🍑",
         image: "https://images.unsplash.com/photo-1609825480373-1c9c2b0a0b6b?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Oq Shaftoli": {
+    {
+        id: 7,
+        name: "Oq Shaftoli",
+        emoji: "🍑",
         price: 25000,
         category: "klassik",
-        emoji: "🍑",
         image: "https://images.unsplash.com/photo-1629828874514-2d4e8e4e8c0b?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Anjir Shaftoli": {
+    {
+        id: 8,
+        name: "Anjir Shaftoli",
+        emoji: "🍑",
         price: 25000,
         category: "klassik",
-        emoji: "🍑",
         image: "https://images.unsplash.com/photo-1609825480373-1c9c2b0a0b6b?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Uzum": {
+    {
+        id: 9,
+        name: "Uzum",
+        emoji: "🍇",
         price: 30000,
         category: "rezavor",
-        emoji: "🍇",
         image: "https://images.unsplash.com/photo-1537640538966-79f369143f8f?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Apelsin": {
-        price: 30000,
-        category: "klassik",
+    {
+        id: 10,
+        name: "Apelsin",
         emoji: "🍊",
+        price: 30000,
+        category: "tropik",
         image: "https://images.unsplash.com/photo-1547514701-42782101795e?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Yashil olma": {
+    {
+        id: 11,
+        name: "Yashil olma",
+        emoji: "🍏",
         price: 25000,
         category: "klassik",
-        emoji: "🍏",
         image: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Banan": {
+    {
+        id: 12,
+        name: "Banan",
+        emoji: "🍌",
         price: 20000,
         category: "tropik",
-        emoji: "🍌",
         image: "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Anjir": {
+    {
+        id: 13,
+        name: "Anjir",
+        emoji: "🫒",
         price: 25000,
         category: "klassik",
-        emoji: "🫐",
         image: "https://images.unsplash.com/photo-1601379760883-1bb497c558b0?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Nok": {
+    {
+        id: 14,
+        name: "Nok",
+        emoji: "🍐",
         price: 40000,
         category: "klassik",
-        emoji: "🍐",
         image: "https://images.unsplash.com/photo-1514756331096-242fdeb70d4a?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Qulupnay": {
+    {
+        id: 15,
+        name: "Qulupnay",
+        emoji: "🍓",
         price: 100000,
         category: "rezavor",
-        emoji: "🍓",
         image: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Ananas": {
+    {
+        id: 16,
+        name: "Ananas",
+        emoji: "🍍",
         price: 50000,
         category: "tropik",
-        emoji: "🍍",
         image: "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Laym": {
+    {
+        id: 17,
+        name: "Laym",
+        emoji: "🍋",
         price: 100000,
         category: "tropik",
-        emoji: "🍋",
         image: "https://images.unsplash.com/photo-1582281298055-e25b84a30b0b?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Limon": {
-        price: 50000,
-        category: "klassik",
+    {
+        id: 18,
+        name: "Limon",
         emoji: "🍋",
+        price: 50000,
+        category: "tropik",
         image: "https://images.unsplash.com/photo-1590502593747-42a996133562?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Golubika": {
+    {
+        id: 19,
+        name: "Golubika",
+        emoji: "🫐",
         price: 40000,
         category: "rezavor",
-        emoji: "🫐",
         image: "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Kiwi": {
+    {
+        id: 20,
+        name: "Kiwi",
+        emoji: "🥝",
         price: 70000,
         category: "tropik",
-        emoji: "🥝",
         image: "https://images.unsplash.com/photo-1585059895524-72359e06133a?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Ejevika": {
+    {
+        id: 21,
+        name: "Ejevika",
+        emoji: "🫐",
         price: 70000,
         category: "rezavor",
-        emoji: "🫐",
         image: "https://images.unsplash.com/photo-1522109691629-7d6d9d4f8b98?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Malina": {
+    {
+        id: 22,
+        name: "Malina",
+        emoji: "🍓",
         price: 100000,
         category: "rezavor",
-        emoji: "🫐",
         image: "https://images.unsplash.com/photo-1577069861033-55d7da4dcfa2?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Mandarin": {
-        price: 40000,
-        category: "klassik",
+    {
+        id: 23,
+        name: "Mandarin",
         emoji: "🍊",
+        price: 40000,
+        category: "tropik",
         image: "https://images.unsplash.com/photo-1609424572698-04d9d2e04954?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Kokos": {
+    {
+        id: 24,
+        name: "Kokos",
+        emoji: "🥥",
         price: 50000,
         category: "tropik",
-        emoji: "🥥",
         image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Avokado": {
+    {
+        id: 25,
+        name: "Avokado",
+        emoji: "🥑",
         price: 30000,
         category: "tropik",
-        emoji: "🥑",
         image: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?auto=format&fit=crop&w=700&q=80"
     },
-
-    "Olxo‘ri": {
+    {
+        id: 26,
+        name: "Olxo‘ri",
+        emoji: "🟣",
         price: 10000,
         category: "klassik",
-        emoji: "🟣",
         image: "https://images.unsplash.com/photo-1596363505729-4190a9506133?auto=format&fit=crop&w=700&q=80"
     }
-};
+];
 
 
-/* =========================
-   SAVATCHA
-========================= */
+// ===============================
+// SAVATCHA
+// ===============================
 
-let cart =
-    JSON.parse(localStorage.getItem("mevaMixCart")) || [];
+let cart = [];
+
+try {
+    cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+} catch {
+    cart = [];
+}
 
 
-/* =========================
-   TIL
-========================= */
+// ===============================
+// TIL TANLASH
+// ===============================
 
-function chooseLanguage(language) {
+function chooseLanguage(lang) {
+    if (!validLanguages.includes(lang)) return;
 
-    currentLanguage = language;
+    currentLanguage = lang;
+    localStorage.setItem(LANGUAGE_KEY, lang);
 
-    localStorage.setItem(
-        "mevaMixLanguage",
-        language
-    );
+    const languageStep = document.getElementById("languageStep");
+    const themeStep = document.getElementById("themeStep");
 
-    document
-        .getElementById("languageStep")
-        .classList.add("hidden");
+    if (languageStep) {
+        languageStep.classList.add("hidden");
+    }
 
-    document
-        .getElementById("themeStep")
-        .classList.remove("hidden");
+    if (themeStep) {
+        themeStep.classList.remove("hidden");
+    }
 
     updateThemeTexts();
 }
 
 
-function updateThemeTexts() {
-
-    if (!currentLanguage) return;
-
-    const text = translations[currentLanguage];
-
-    const title = {
-        uz: "Rejimni tanlang",
-        ru: "Выберите режим",
-        en: "Choose a theme"
-    };
-
-    const desc = {
-        uz: "Sayt ko‘rinishini tanlang",
-        ru: "Выберите внешний вид сайта",
-        en: "Choose how the website looks"
-    };
-
-    document.getElementById("themeTitle").textContent =
-        title[currentLanguage];
-
-    document.getElementById("themeDescription").textContent =
-        desc[currentLanguage];
-
-    document.getElementById("lightText").textContent =
-        currentLanguage === "uz"
-            ? "Oq rejim"
-            : currentLanguage === "ru"
-                ? "Светлая тема"
-                : "Light mode";
-
-    document.getElementById("darkText").textContent =
-        currentLanguage === "uz"
-            ? "Qorong‘i rejim"
-            : currentLanguage === "ru"
-                ? "Тёмная тема"
-                : "Dark mode";
-}
-
-
-/* =========================
-   REJIM
-========================= */
+// ===============================
+// REJIM TANLASH
+// ===============================
 
 function chooseTheme(theme) {
+    if (!validThemes.includes(theme)) return;
 
     currentTheme = theme;
-
-    localStorage.setItem(
-        "mevaMixTheme",
-        theme
-    );
+    localStorage.setItem(THEME_KEY, theme);
 
     applyTheme();
     applyLanguage();
 
-    document
-        .getElementById("setupOverlay")
-        .style.display = "none";
+    const overlay = document.getElementById("setupOverlay");
+
+    if (overlay) {
+        overlay.style.display = "none";
+    }
+
+    document.body.classList.remove("setup-active");
 
     renderFruits();
     updateCart();
 }
 
 
+// ===============================
+// TEMA
+// ===============================
+
 function applyTheme() {
-
-    document.body.classList.toggle(
-        "dark",
-        currentTheme === "dark"
-    );
-}
-
-
-/* =========================
-   TARJIMA
-========================= */
-
-function applyLanguage() {
-
-    const language =
-        translations[currentLanguage] || translations.uz;
-
-    document.querySelectorAll("[data-i18n]").forEach(element => {
-
-        const key = element.dataset.i18n;
-
-        if (language[key]) {
-            element.textContent = language[key];
-        }
-
-    });
-
-    const search =
-        document.getElementById("searchInput");
-
-    if (search) {
-
-        search.placeholder =
-            currentLanguage === "ru"
-                ? "🔍 Найти фрукт..."
-                : currentLanguage === "en"
-                    ? "🔍 Search fruit..."
-                    : "🔍 Meva qidiring...";
+    if (currentTheme === "dark") {
+        document.body.classList.add("dark");
+    } else {
+        document.body.classList.remove("dark");
     }
 }
 
 
-/* =========================
-   SOZLAMALARNI QAYTA OCHISH
-========================= */
+// ===============================
+// TEMA MATNLARI
+// ===============================
+
+function updateThemeTexts() {
+    const lang = translations[currentLanguage] || translations.uz;
+
+    const title = document.getElementById("themeTitle");
+    const description = document.getElementById("themeDescription");
+    const lightText = document.getElementById("lightText");
+    const darkText = document.getElementById("darkText");
+
+    if (title) title.textContent = lang.themeTitle;
+    if (description) description.textContent = lang.themeDescription;
+    if (lightText) lightText.textContent = lang.light;
+    if (darkText) darkText.textContent = lang.dark;
+}
+
+
+// ===============================
+// TILNI SAYTGA QO‘LLASH
+// ===============================
+
+function applyLanguage() {
+    const lang = translations[currentLanguage] || translations.uz;
+
+    document.documentElement.lang = currentLanguage || "uz";
+
+    document.querySelectorAll("[data-i18n]").forEach(element => {
+        const key = element.getAttribute("data-i18n");
+
+        if (lang[key]) {
+            element.textContent = lang[key];
+        }
+    });
+
+    const searchInput = document.getElementById("searchInput");
+
+    if (searchInput) {
+        searchInput.placeholder = lang.search;
+    }
+
+    updateThemeTexts();
+}
+
+
+// ===============================
+// SOZLAMALARNI QAYTA TANLASH
+// ===============================
 
 function resetSetup() {
-
-    localStorage.removeItem("mevaMixLanguage");
-    localStorage.removeItem("mevaMixTheme");
+    localStorage.removeItem(LANGUAGE_KEY);
+    localStorage.removeItem(THEME_KEY);
 
     currentLanguage = null;
     currentTheme = null;
 
+    const overlay = document.getElementById("setupOverlay");
+    const languageStep = document.getElementById("languageStep");
+    const themeStep = document.getElementById("themeStep");
+
+    if (overlay) {
+        overlay.style.display = "flex";
+    }
+
+    if (languageStep) {
+        languageStep.classList.remove("hidden");
+    }
+
+    if (themeStep) {
+        themeStep.classList.add("hidden");
+    }
+
     document.body.classList.remove("dark");
-
-    document
-        .getElementById("setupOverlay")
-        .style.display = "flex";
-
-    document
-        .getElementById("languageStep")
-        .classList.remove("hidden");
-
-    document
-        .getElementById("themeStep")
-        .classList.add("hidden");
 }
 
 
-/* =========================
-   MEVALARNI CHIQARISH
-========================= */
+// ===============================
+// MEVALARNI CHIQARISH
+// ===============================
 
-let currentCategory = "all";
-
-function renderFruits(list = Object.keys(fruits)) {
-
-    const grid =
-        document.getElementById("fruitGrid");
+function renderFruits(list = fruits) {
+    const grid = document.getElementById("fruitGrid");
 
     if (!grid) return;
 
-    grid.innerHTML = "";
+    const lang = translations[currentLanguage] || translations.uz;
 
-    list.forEach(name => {
-
-        const fruit = fruits[name];
-
-        const card =
-            document.createElement("div");
-
-        card.className = "fruit-card";
-
-        card.innerHTML = `
-            <img
-                class="fruit-image"
-                src="${fruit.image}"
-                alt="${name}"
-                onerror="this.style.display='none';"
-            >
-
-            <div class="fruit-info">
-
-                <h3>
-                    ${fruit.emoji} ${name}
-                </h3>
-
-                <div class="fruit-price">
-                    ${formatMoney(fruit.price)} so‘m
-                </div>
-
-                <button
-                    class="add-button"
-                    onclick="addToCart('${name}')">
-                    + ${currentLanguage === "ru"
-                        ? "Добавить"
-                        : currentLanguage === "en"
-                            ? "Add to cart"
-                            : "Savatchaga qo‘shish"}
-                </button>
-
+    if (list.length === 0) {
+        grid.innerHTML = `
+            <div class="no-results">
+                <div>🍎</div>
+                <h3>${currentLanguage === "ru"
+                    ? "Фрукты не найдены"
+                    : currentLanguage === "en"
+                        ? "No fruits found"
+                        : "Meva topilmadi"
+                }</h3>
             </div>
         `;
+        return;
+    }
 
-        grid.appendChild(card);
-    });
+    grid.innerHTML = list.map(fruit => `
+        <article class="fruit-card">
+            <div class="fruit-image-wrap">
+                <img
+                    class="fruit-image"
+                    src="${fruit.image}"
+                    alt="${fruit.name}"
+                    loading="lazy"
+                    onerror="this.style.display='none'; this.parentElement.classList.add('image-error');"
+                >
+                <div class="fruit-emoji">${fruit.emoji}</div>
+            </div>
+
+            <div class="fruit-info">
+                <div class="fruit-category">
+                    ${getCategoryName(fruit.category)}
+                </div>
+
+                <h3>${fruit.name}</h3>
+
+                <div class="fruit-bottom">
+                    <strong>${formatMoney(fruit.price)}</strong>
+
+                    <button
+                        class="add-button"
+                        type="button"
+                        onclick="addToCart(${fruit.id})"
+                    >
+                        + ${lang.add}
+                    </button>
+                </div>
+            </div>
+        </article>
+    `).join("");
 }
 
 
-/* =========================
-   PUL FORMAT
-========================= */
+// ===============================
+// KATEGORIYA NOMI
+// ===============================
+
+function getCategoryName(category) {
+    const lang = translations[currentLanguage] || translations.uz;
+
+    if (category === "tropik") return lang.tropical;
+    if (category === "rezavor") return lang.berry;
+    return lang.classic;
+}
+
+
+// ===============================
+// PUL FORMAT
+// ===============================
 
 function formatMoney(number) {
-
-    return new Intl.NumberFormat("uz-UZ")
-        .format(number);
+    return new Intl.NumberFormat("uz-UZ").format(number) + " so‘m";
 }
 
 
-/* =========================
-   SAVATCHAGA QO‘SHISH
-========================= */
+// ===============================
+// SAVATCHAGA QO‘SHISH
+// ===============================
 
-function addToCart(name) {
+function addToCart(id) {
+    const fruit = fruits.find(item => item.id === id);
 
-    const existing =
-        cart.find(item => item.name === name);
+    if (!fruit) return;
+
+    const existing = cart.find(item => item.id === id);
 
     if (existing) {
-        existing.quantity++;
+        existing.quantity += 1;
     } else {
-
         cart.push({
-            name,
+            id: fruit.id,
+            name: fruit.name,
+            price: fruit.price,
+            emoji: fruit.emoji,
             quantity: 1
         });
-
     }
 
     saveCart();
     updateCart();
 
-    toggleCart(true);
+    const lang = translations[currentLanguage] || translations.uz;
+
+    showToast(`${fruit.emoji} ${fruit.name} ${lang.added}`);
 }
 
 
-/* =========================
-   SAVATCHA
-========================= */
+// ===============================
+// CART SAQLASH
+// ===============================
 
 function saveCart() {
-
-    localStorage.setItem(
-        "mevaMixCart",
-        JSON.stringify(cart)
-    );
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
 }
 
 
+// ===============================
+// CARTNI YANGILASH
+// ===============================
+
 function updateCart() {
+    const cartItems = document.getElementById("cartItems");
+    const cartCount = document.getElementById("cartCount");
+    const cartTotal = document.getElementById("cartTotal");
 
-    const container =
-        document.getElementById("cartItems");
+    if (!cartItems) return;
 
-    const count =
-        document.getElementById("cartCount");
+    const lang = translations[currentLanguage] || translations.uz;
 
-    const total =
-        document.getElementById("cartTotal");
+    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const total = cart.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+    );
 
-    if (!container) return;
+    if (cartCount) {
+        cartCount.textContent = count;
+    }
+
+    if (cartTotal) {
+        cartTotal.textContent = formatMoney(total);
+    }
 
     if (cart.length === 0) {
-
-        container.innerHTML = `
+        cartItems.innerHTML = `
             <div class="empty-cart">
                 <div>🛒</div>
-                <h3>
-                    ${translations[currentLanguage]?.emptyCart || "Savatcha bo‘sh"}
-                </h3>
-                <p>
-                    ${translations[currentLanguage]?.chooseFruit || "Mevalardan birortasini tanlang 🍎"}
-                </p>
+                <h3>${lang.emptyCart}</h3>
+                <p>${lang.chooseFruit}</p>
             </div>
         `;
-
-        count.textContent = "0";
-        total.textContent = "0 so‘m";
-
         return;
     }
 
+    cartItems.innerHTML = cart.map(item => `
+        <div class="cart-item">
+            <div class="cart-item-icon">
+                ${item.emoji}
+            </div>
 
-    let totalPrice = 0;
-    let totalCount = 0;
+            <div class="cart-item-info">
+                <h4>${item.name}</h4>
+                <strong>${formatMoney(item.price * item.quantity)}</strong>
 
-    container.innerHTML = "";
+                <div class="quantity-controls">
+                    <button
+                        type="button"
+                        onclick="changeQuantity(${item.id}, -1)"
+                    >−</button>
 
+                    <span>${item.quantity}</span>
 
-    cart.forEach(item => {
-
-        const fruit =
-            fruits[item.name];
-
-        if (!fruit) return;
-
-        const itemTotal =
-            fruit.price * item.quantity;
-
-        totalPrice += itemTotal;
-        totalCount += item.quantity;
-
-
-        const div =
-            document.createElement("div");
-
-        div.className = "cart-item";
-
-        div.innerHTML = `
-
-            <img src="${fruit.image}" alt="${item.name}">
-
-            <div>
-
-                <h4>
-                    ${fruit.emoji} ${item.name}
-                </h4>
-
-                <div class="cart-item-price">
-                    ${formatMoney(itemTotal)} so‘m
+                    <button
+                        type="button"
+                        onclick="changeQuantity(${item.id}, 1)"
+                    >+</button>
                 </div>
-
-                <div class="qty">
-
-                    <button onclick="changeQuantity('${item.name}', -1)">
-                        −
-                    </button>
-
-                    <strong>${item.quantity}</strong>
-
-                    <button onclick="changeQuantity('${item.name}', 1)">
-                        +
-                    </button>
-
-                </div>
-
             </div>
 
             <button
-                class="remove"
-                onclick="removeFromCart('${item.name}')">
+                class="remove-item"
+                type="button"
+                onclick="removeFromCart(${item.id})"
+                title="Remove"
+            >
                 ✕
             </button>
-
-        `;
-
-        container.appendChild(div);
-
-    });
-
-
-    count.textContent = totalCount;
-
-    total.textContent =
-        `${formatMoney(totalPrice)} so‘m`;
+        </div>
+    `).join("");
 }
 
 
-function changeQuantity(name, change) {
+// ===============================
+// MIQDORNI O‘ZGARTIRISH
+// ===============================
 
-    const item =
-        cart.find(item => item.name === name);
+function changeQuantity(id, change) {
+    const item = cart.find(product => product.id === id);
 
     if (!item) return;
 
     item.quantity += change;
 
     if (item.quantity <= 0) {
-
-        cart =
-            cart.filter(item => item.name !== name);
-
+        cart = cart.filter(product => product.id !== id);
     }
 
     saveCart();
@@ -761,309 +822,292 @@ function changeQuantity(name, change) {
 }
 
 
-function removeFromCart(name) {
+// ===============================
+// CARTDAN O‘CHIRISH
+// ===============================
 
-    cart =
-        cart.filter(item => item.name !== name);
+function removeFromCart(id) {
+    cart = cart.filter(item => item.id !== id);
 
     saveCart();
     updateCart();
 }
 
 
-/* =========================
-   CART OCHISH
-========================= */
+// ===============================
+// CART OCHISH/YOPISH
+// ===============================
 
 function toggleCart(force) {
+    const panel = document.getElementById("cartPanel");
+    const overlay = document.getElementById("cartOverlay");
 
-    const panel =
-        document.getElementById("cartPanel");
+    if (!panel) return;
 
-    const isOpen =
-        panel.classList.contains("open");
+    const isOpen = document.body.classList.contains("cart-open");
 
-    if (force === true || !isOpen) {
+    const shouldOpen =
+        typeof force === "boolean"
+            ? force
+            : !isOpen;
 
-        panel.classList.add("open");
-        document.body.classList.add("cart-open");
+    document.body.classList.toggle("cart-open", shouldOpen);
 
-    } else {
+    if (panel) {
+        panel.classList.toggle("open", shouldOpen);
+    }
 
-        panel.classList.remove("open");
-        document.body.classList.remove("cart-open");
-
+    if (overlay) {
+        overlay.classList.toggle("open", shouldOpen);
     }
 }
 
 
-/* =========================
-   QIDIRUV
-========================= */
+// ===============================
+// QIDIRUV
+// ===============================
 
 function searchFruits() {
+    const input = document.getElementById("searchInput");
 
-    const input =
-        document.getElementById("searchInput");
+    if (!input) return;
 
-    const query =
-        input.value.toLowerCase().trim();
+    const query = input.value.toLowerCase().trim();
 
-    const result =
-        Object.keys(fruits).filter(name => {
+    let filtered = fruits;
 
-            const matchesName =
-                name.toLowerCase().includes(query);
+    if (currentCategory !== "all") {
+        filtered = filtered.filter(
+            fruit => fruit.category === currentCategory
+        );
+    }
 
-            const matchesCategory =
-                currentCategory === "all" ||
-                fruits[name].category === currentCategory;
+    if (query) {
+        filtered = filtered.filter(
+            fruit =>
+                fruit.name.toLowerCase().includes(query)
+        );
+    }
 
-            return matchesName && matchesCategory;
-
-        });
-
-    renderFruits(result);
+    renderFruits(filtered);
 }
 
 
-/* =========================
-   CATEGORY
-========================= */
+// ===============================
+// KATEGORIYA FILTER
+// ===============================
 
 function filterFruits(category, button) {
-
     currentCategory = category;
 
-    document
-        .querySelectorAll(".category")
-        .forEach(btn => btn.classList.remove("active"));
+    document.querySelectorAll(".category").forEach(btn => {
+        btn.classList.remove("active");
+    });
 
-    button.classList.add("active");
+    if (button) {
+        button.classList.add("active");
+    }
 
     searchFruits();
 }
 
 
-/* =========================
-   SHOW FRUITS
-========================= */
+// ===============================
+// MEVALAR BO‘LIMIGA O‘TISH
+// ===============================
 
 function showFruits() {
+    const section = document.getElementById("mevalar");
 
-    document
-        .getElementById("mevalar")
-        .scrollIntoView({
+    if (section) {
+        section.scrollIntoView({
             behavior: "smooth"
         });
+    }
 }
 
 
-/* =========================
-   BUYURTMA
-========================= */
+// ===============================
+// TOAST
+// ===============================
 
-function checkout() {
+function showToast(message) {
+    const oldToast = document.querySelector(".meva-toast");
+
+    if (oldToast) {
+        oldToast.remove();
+    }
+
+    const toast = document.createElement("div");
+
+    toast.className = "meva-toast";
+    toast.textContent = message;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add("show");
+    }, 10);
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }, 2200);
+}
+
+
+// ===============================
+// BUYURTMA
+// ===============================
+
+async function checkout() {
+    const lang = translations[currentLanguage] || translations.uz;
 
     if (cart.length === 0) {
-
-        alert(
-            currentLanguage === "ru"
-                ? "Корзина пуста!"
-                : currentLanguage === "en"
-                    ? "Your cart is empty!"
-                    : "Savatcha bo‘sh!"
-        );
-
+        showToast(`🛒 ${lang.cartEmpty}`);
         return;
     }
 
+    const name = prompt(lang.namePrompt);
 
-    let products = [];
+    if (!name) {
+        showToast(lang.cancelled);
+        return;
+    }
 
-    let total = 0;
+    const phone = prompt(lang.phonePrompt);
 
+    if (!phone) {
+        showToast(lang.cancelled);
+        return;
+    }
 
-    cart.forEach(item => {
+    const address = prompt(lang.addressPrompt);
 
-        const fruit =
-            fruits[item.name];
+    if (!address) {
+        showToast(lang.cancelled);
+        return;
+    }
 
-        const itemTotal =
-            fruit.price * item.quantity;
-
-        total += itemTotal;
-
-        products.push({
-            name: item.name,
-            quantity: item.quantity,
-            price: fruit.price,
-            total: itemTotal
-        });
-
-    });
-
-
-    const name =
-        prompt(
-            currentLanguage === "ru"
-                ? "Ваше имя:"
-                : currentLanguage === "en"
-                    ? "Your name:"
-                    : "Ismingiz:"
-        );
-
-    if (!name) return;
-
-
-    const phone =
-        prompt(
-            currentLanguage === "ru"
-                ? "Номер телефона:"
-                : currentLanguage === "en"
-                    ? "Phone number:"
-                    : "Telefon raqamingiz:"
-        );
-
-    if (!phone) return;
-
-
-    const address =
-        prompt(
-            currentLanguage === "ru"
-                ? "Адрес доставки:"
-                : currentLanguage === "en"
-                    ? "Delivery address:"
-                    : "Yetkazib berish manzili:"
-        );
-
-    if (!address) return;
-
+    const total = cart.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+    );
 
     const orderData = {
+        name: name.trim(),
+        phone: phone.trim(),
+        address: address.trim(),
 
-        name,
-        phone,
-        address,
+        items: cart.map(item => ({
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price
+        })),
 
-        products,
-
-        subtotal: total,
+        total: total,
         discount: 0,
-        total,
-
         promoCode: ""
     };
 
 
-    fetch(GOOGLE_SCRIPT_URL, {
+    // Google Apps Script
+    const SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbx7qy39x0JiSHzvCPFc5pY5aFtROnmN0tCEmhnOzSHvNQwrosTUZd4MeHxJakcFSfZ/exec";
 
-        method: "POST",
+    try {
+        await fetch(SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify(orderData)
+        });
 
-        mode: "no-cors",
-
-        headers: {
-            "Content-Type": "text/plain;charset=utf-8"
-        },
-
-        body: JSON.stringify(orderData)
-
-    })
-    .then(() => {
-
-        alert(
-            currentLanguage === "ru"
-                ? "Заказ отправлен! 🎉"
-                : currentLanguage === "en"
-                    ? "Order sent! 🎉"
-                    : "Buyurtma yuborildi! 🎉"
-        );
+        showToast(lang.orderSent);
 
         cart = [];
 
         saveCart();
         updateCart();
 
-        toggleCart();
+        setTimeout(() => {
+            toggleCart(false);
+        }, 800);
 
-    })
-    .catch(() => {
-
-        alert(
-            currentLanguage === "ru"
-                ? "Ошибка при отправке заказа."
-                : currentLanguage === "en"
-                    ? "Error sending order."
-                    : "Buyurtmani yuborishda xatolik."
-        );
-
-    });
+    } catch (error) {
+        console.error(error);
+        showToast(lang.orderError);
+    }
 }
 
 
-/* =========================
-   START
-========================= */
+// ===============================
+// SAYT ISHGA TUSHGANDA
+// ===============================
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    currentLanguage =
-        localStorage.getItem("mevaMixLanguage");
-
-    currentTheme =
-        localStorage.getItem("mevaMixTheme");
-
-
-    /*
-       AGAR TIL VA REJIM OLDINDAN TANLANGAN BO‘LSA
-       SAYT TO‘G‘RIDAN-TO‘G‘RI OCHILADI
-    */
-
-    if (currentLanguage && currentTheme) {
-
+    // Tema bor bo‘lsa qo‘llaymiz
+    if (currentTheme) {
         applyTheme();
-        applyLanguage();
-
-        document
-            .getElementById("setupOverlay")
-            .style.display = "none";
-
     }
 
-    /*
-       FAQAT TIL TANLANGAN BO‘LSA
-       REJIM OYNASI OCHILADI
-    */
+    // Til bor bo‘lsa qo‘llaymiz
+    if (currentLanguage) {
+        applyLanguage();
+    }
 
-    else if (currentLanguage && !currentTheme) {
+    const overlay = document.getElementById("setupOverlay");
+    const languageStep = document.getElementById("languageStep");
+    const themeStep = document.getElementById("themeStep");
 
-        document
-            .getElementById("languageStep")
-            .classList.add("hidden");
+    // Hech narsa tanlanmagan
+    if (!currentLanguage) {
 
-        document
-            .getElementById("themeStep")
-            .classList.remove("hidden");
+        if (overlay) {
+            overlay.style.display = "flex";
+        }
+
+        if (languageStep) {
+            languageStep.classList.remove("hidden");
+        }
+
+        if (themeStep) {
+            themeStep.classList.add("hidden");
+        }
+
+        return;
+    }
+
+    // Til tanlangan, lekin rejim tanlanmagan
+    if (!currentTheme) {
+
+        if (overlay) {
+            overlay.style.display = "flex";
+        }
+
+        if (languageStep) {
+            languageStep.classList.add("hidden");
+        }
+
+        if (themeStep) {
+            themeStep.classList.remove("hidden");
+        }
 
         updateThemeTexts();
-
+        return;
     }
 
-    /*
-       HECH NARSA TANLANMAGAN BO‘LSA
-       TIL OYNASI OCHILADI
-    */
-
-    else {
-
-        document
-            .getElementById("setupOverlay")
-            .style.display = "flex";
-
+    // Hammasi tanlangan — saytga kiramiz
+    if (overlay) {
+        overlay.style.display = "none";
     }
-
 
     renderFruits();
     updateCart();
-
 });
