@@ -16,22 +16,102 @@
 
 <body>
 
+    <!-- KIRISH OYNASI -->
+    <div class="welcome-screen" id="welcomeScreen">
+
+        <div class="welcome-card">
+
+            <div class="welcome-logo">
+                <span>Meva</span> Mix 🍓
+            </div>
+
+            <div class="welcome-step" id="languageStep">
+
+                <div class="welcome-icon">🌐</div>
+
+                <h1>Tilni tanlang</h1>
+
+                <p>
+                    Saytdan foydalanish uchun tilni tanlang
+                </p>
+
+                <div class="language-buttons">
+
+                    <button class="language-btn" data-lang="uz">
+                        🇺🇿
+                        <span>O‘zbekcha</span>
+                    </button>
+
+                    <button class="language-btn" data-lang="ru">
+                        🇷🇺
+                        <span>Русский</span>
+                    </button>
+
+                    <button class="language-btn" data-lang="en">
+                        🇬🇧
+                        <span>English</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="welcome-step hidden-step" id="themeStep">
+
+                <div class="welcome-icon">🎨</div>
+
+                <h1>Ko‘rinishni tanlang</h1>
+
+                <p>
+                    Sayt qanday ko‘rinishda bo‘lishini tanlang
+                </p>
+
+                <div class="theme-buttons">
+
+                    <button class="theme-btn" data-theme="light">
+                        ☀️
+                        <strong>Oq rejim</strong>
+                        <span>Yorqin va toza</span>
+                    </button>
+
+                    <button class="theme-btn" data-theme="dark">
+                        🌙
+                        <strong>Qorong‘i rejim</strong>
+                        <span>Premium va zamonaviy</span>
+                    </button>
+
+                </div>
+
+                <button class="continue-btn" id="continueBtn">
+                    Davom etish →
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
     <!-- NAVBAR -->
     <header class="navbar">
+
         <div class="logo">
-            Meva <span>Mix</span> 🍓
+            <span>Meva</span> Mix 🍓
         </div>
 
         <nav>
             <a href="#bosh">Bosh sahifa</a>
             <a href="#mevalar">Mevalar</a>
             <a href="#biz-haqimizda">Biz haqimizda</a>
-            <a href="#promo">Promokod</a>
         </nav>
 
         <button class="nav-button" onclick="toggleCart()">
-            🛒 Savatcha
+            🛒 <span data-i18n="cart">Savatcha</span>
+            <b id="navCartCount">0</b>
         </button>
+
     </header>
 
 
@@ -53,8 +133,6 @@
                 Meva Mix — eng sara va yangi
                 mevalarni bir joyga jamlagan
                 zamonaviy meva do‘koni.
-                Mazali, tabiiy va sifatli
-                mevalar siz uchun.
             </p>
 
             <div class="hero-buttons">
@@ -74,31 +152,36 @@
                 </a>
 
             </div>
+
         </div>
 
 
         <div class="hero-visual">
 
+            <div class="hero-glow"></div>
+
             <div class="hero-circle"></div>
 
             <div class="hero-main-fruit">
+
                 <img
                     class="hero-fruit"
                     src="https://images.unsplash.com/photo-1619566636858-adf3ef46400b?auto=format&fit=crop&w=900&q=85"
-                    alt="Yangi mevalar"
+                    alt="Mevalar"
                 >
+
             </div>
 
             <div class="mini-fruit mini-one">🍓</div>
             <div class="mini-fruit mini-two">🍊</div>
-            <div class="mini-fruit mini-three">🍌</div>
+            <div class="mini-fruit mini-three">🥭</div>
 
         </div>
 
     </section>
 
 
-    <!-- STATISTIKA -->
+    <!-- STATS -->
     <section class="stats">
 
         <div class="stat">
@@ -138,47 +221,41 @@
                 </h2>
             </div>
 
-            <button onclick="showFruits()">
-                Barchasini ko‘rish →
-            </button>
-
         </div>
 
 
-        <!-- SEARCH VA CATEGORY -->
         <div class="fruit-tools">
 
             <input
                 type="text"
                 id="searchInput"
                 placeholder="🔍 Meva qidiring..."
-                oninput="searchFruits()"
             >
 
             <button
                 class="category active"
-                onclick="filterFruits('all', this)"
+                data-category="all"
             >
                 Barchasi
             </button>
 
             <button
                 class="category"
-                onclick="filterFruits('tropik', this)"
+                data-category="tropik"
             >
                 🥭 Tropik
             </button>
 
             <button
                 class="category"
-                onclick="filterFruits('rezavor', this)"
+                data-category="rezavor"
             >
                 🍓 Rezavor
             </button>
 
             <button
                 class="category"
-                onclick="filterFruits('klassik', this)"
+                data-category="klassik"
             >
                 🍎 Klassik
             </button>
@@ -186,7 +263,6 @@
         </div>
 
 
-        <!-- MEVALAR JS ORQALI CHIQADI -->
         <div
             class="fruit-grid"
             id="fruitGrid"
@@ -195,11 +271,8 @@
     </section>
 
 
-    <!-- BIZ HAQIMIZDA -->
-    <section
-        class="about-section"
-        id="biz-haqimizda"
-    >
+    <!-- ABOUT -->
+    <section class="about-section" id="biz-haqimizda">
 
         <div class="about-visual">
 
@@ -223,11 +296,7 @@
             <p>
                 Biz har kuni eng sifatli
                 va yangi mevalarni tanlab,
-                sizga yetkazishga harakat
-                qilamiz.
-
-                Meva Mix bilan foydali
-                va mazali tanlov qiling.
+                sizga yetkazishga harakat qilamiz.
             </p>
 
             <div class="about-list">
@@ -238,52 +307,6 @@
                 <div>❤️ Sifat kafolati</div>
 
             </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- PROMOKOD -->
-    <section
-        class="promo-section"
-        id="promo"
-    >
-
-        <div class="promo-content">
-
-            <div class="promo-icon">
-                🎁
-            </div>
-
-            <small>MAXSUS TAKLIF</small>
-
-            <h2>
-                10% chegirma
-                <span>oling!</span>
-            </h2>
-
-            <p>
-                Promokodni kiriting va
-                buyurtmangiz uchun
-                10% chegirmaga ega bo‘ling.
-            </p>
-
-            <div class="promo-box">
-
-                <input
-                    type="text"
-                    id="promoInput"
-                    placeholder="Promokodni kiriting"
-                >
-
-                <button onclick="checkPromo()">
-                    Tekshirish
-                </button>
-
-            </div>
-
-            <div id="promoResult"></div>
 
         </div>
 
@@ -311,9 +334,7 @@
                 <h2>Savatcha</h2>
             </div>
 
-            <button onclick="toggleCart()">
-                ✕
-            </button>
+            <button onclick="toggleCart()">✕</button>
 
         </div>
 
@@ -321,27 +342,19 @@
         <div
             class="cart-items"
             id="cartItems"
-        >
-
-            <div class="empty-cart">
-
-                <div>🛒</div>
-
-                <h3>
-                    Savatcha bo‘sh
-                </h3>
-
-                <p>
-                    Mevalardan birortasini
-                    tanlang 🍎
-                </p>
-
-            </div>
-
-        </div>
+        ></div>
 
 
         <div class="cart-footer">
+
+            <div class="cart-summary">
+
+                <div>
+                    <span>Mahsulotlar:</span>
+                    <strong id="cartSubtotal">0 so‘m</strong>
+                </div>
+
+            </div>
 
             <div class="cart-total">
 
@@ -371,10 +384,7 @@
         onclick="toggleCart()"
     >
         🛒
-
-        <span id="cartCount">
-            0
-        </span>
+        <span id="cartCount">0</span>
     </button>
 
 
@@ -382,7 +392,7 @@
     <footer>
 
         <div class="footer-logo">
-            Meva <span>Mix</span> 🍓
+            <span>Meva</span> Mix 🍓
         </div>
 
         <p>
@@ -391,14 +401,12 @@
         </p>
 
         <div class="footer-bottom">
-            © 2026 Meva Mix.
-            Barcha huquqlar himoyalangan.
+            © 2026 Meva Mix. Barcha huquqlar himoyalangan.
         </div>
 
     </footer>
 
 
-    <!-- JAVASCRIPT -->
     <script src="script.js"></script>
 
 </body>
