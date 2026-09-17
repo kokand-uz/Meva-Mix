@@ -1,6 +1,6 @@
 /* =====================================================
-   MEVA MIX 🍓
-   Yangi sayt — Turquoise + Gold
+    MEVA MIX 🍓
+    Yangi sayt — Turquoise + Gold
 ===================================================== */
 
 
@@ -18,7 +18,7 @@ const fruits = {
         price: 5000,
         category: "klassik",
         emoji: "🍉",
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDRMWXWApMZsUKyXRouCHBDaEeL-0 ndziBktOrifCL4Q&s=10"
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDRMWXWApMZsUKyXRouCHBDaEeL-0ndziBktOrifCL4Q&s=10"
     },
 
     "Qovun": {
@@ -1282,7 +1282,7 @@ function showOrderForm(items, total) {
 
     const cancelText =
         currentLanguage === "ru"
-            ? "Bekор"
+            ? "Bekor"
             : currentLanguage === "en"
                 ? "Cancel"
                 : "Bekor qilish";
@@ -1664,8 +1664,7 @@ window.addEventListener(
 
         } else {
 
-            navbar.style.boxShadow =
-                "none";
+            navbar.style.boxShadow = "none";
 
         }
 
