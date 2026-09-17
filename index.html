@@ -3,677 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meva-Mix | Premium Mevalar Do'koni</title>
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --card-bg: #1a1a1a;
+            --gold-primary: #d4af37;
+            --gold-light: #f3e5ab;
+            --gold-dark: #aa820a;
+            --text-main: #f5f5f5;
+            --text-muted: #b0b0b0;
+        }
 
-    <title>Meva Mix 🍓</title>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    <link rel="stylesheet" href="style.css">
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
-        rel="stylesheet"
-    >
+        header {
+            background: rgba(13, 13, 13, 0.95);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold-primary), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--gold-primary);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(rgba(13,13,13,0.8), rgba(13,13,13,0.95)), url('https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #fff, var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            color: #000;
+            font-weight: 700;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 40px;
+            color: var(--gold-light);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            border-color: var(--gold-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .product-img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .product-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .product-price {
+            color: var(--gold-primary);
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: #080808;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            margin-top: 60px;
+            font-size: 14px;
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- ================= SETUP ================= -->
-
-<div class="setup-overlay" id="setupOverlay">
-
-    <!-- LANGUAGE -->
-
-    <div class="setup-card" id="languageStep">
-
-        <div class="setup-logo">
-            Meva <span>Mix</span> 🍓
-        </div>
-
-        <h1>Tilni tanlang</h1>
-
-        <p>
-            Meva Mix saytida foydalanadigan tilingizni tanlang
-        </p>
-
-        <button type="button" onclick="chooseLanguage('uz')">
-            🇺🇿 O‘zbekcha
-            <span>Tanlash →</span>
-        </button>
-
-        <button type="button" onclick="chooseLanguage('ru')">
-            🇷🇺 Русский
-            <span>Выбрать →</span>
-        </button>
-
-        <button type="button" onclick="chooseLanguage('en')">
-            🇬🇧 English
-            <span>Select →</span>
-        </button>
-
-    </div>
-
-
-    <!-- THEME -->
-
-    <div class="setup-card hidden" id="themeStep">
-
-        <div class="setup-logo">
-            Meva <span>Mix</span> 🍓
-        </div>
-
-        <h1 id="themeTitle">
-            Rejimni tanlang
-        </h1>
-
-        <p id="themeDescription">
-            Sayt ko‘rinishini tanlang
-        </p>
-
-        <button type="button" onclick="chooseTheme('light')">
-            ☀️
-            <span id="lightText">
-                Oq rejim
-            </span>
-            <span>Tanlash →</span>
-        </button>
-
-        <button type="button" onclick="chooseTheme('dark')">
-            🌙
-            <span id="darkText">
-                Qorong‘i rejim
-            </span>
-            <span>Tanlash →</span>
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- ================= NAVBAR ================= -->
-
-<header class="navbar">
-
-    <div class="logo">
-        <span class="logo-mark">M</span>
-
-        <div>
-            <strong>Meva</strong>
-            <b>Mix</b>
-        </div>
-    </div>
-
-
-    <nav>
-
-        <a href="#home" data-i18n="home">
-            Bosh sahifa
-        </a>
-
-        <a href="#fruits" data-i18n="fruits">
-            Mevalar
-        </a>
-
-        <a href="#about" data-i18n="about">
-            Biz haqimizda
-        </a>
-
-    </nav>
-
-
-    <div class="nav-actions">
-
-        <button
-            type="button"
-            class="settings-btn"
-            onclick="resetSetup()"
-            title="Sozlamalar"
-        >
-            ⚙️
-        </button>
-
-        <button
-            type="button"
-            class="cart-nav-btn"
-            onclick="toggleCart()"
-        >
-            🛒
-            <span data-i18n="cart">
-                Savatcha
-            </span>
-
-            <small id="cartCountNav">
-                0
-            </small>
-        </button>
-
-    </div>
-
-</header>
-
-
-<!-- ================= HERO ================= -->
-
-<main>
-
-<section class="hero" id="home">
-
-    <div class="hero-content">
-
-        <div class="hero-badge">
-            🍓 MEVA MIX
-        </div>
-
-        <h1>
-            Har kuni
-            <span>yangi meva.</span>
-        </h1>
-
-        <p data-i18n="heroText">
-            Eng sara, yangi va mazali mevalarni
-            bir joydan toping.
-        </p>
-
-
-        <div class="hero-buttons">
-
-            <button
-                type="button"
-                class="primary-btn"
-                onclick="showFruits()"
-            >
-                <span data-i18n="viewFruits">
-                    Mevalarni ko‘rish
-                </span>
-
-                →
-            </button>
-
-            <a
-                href="#about"
-                class="outline-btn"
-                data-i18n="about"
-            >
-                Biz haqimizda
-            </a>
-
-        </div>
-
-
-        <div class="hero-info">
-
-            <div>
-                <strong>26+</strong>
-                <span data-i18n="types">
-                    Meva turi
-                </span>
-            </div>
-
-            <div>
-                <strong>100%</strong>
-                <span data-i18n="natural">
-                    Tabiiy
-                </span>
-            </div>
-
-            <div>
-                <strong>24/7</strong>
-                <span data-i18n="service">
-                    Xizmat
-                </span>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- HERO VISUAL -->
-
-    <div class="hero-visual">
-
-        <div class="hero-ring"></div>
-
-        <div class="hero-card hero-card-one">
-            🍓
-            <span>Fresh</span>
-        </div>
-
-        <div class="hero-card hero-card-two">
-            🍊
-            <span>Natural</span>
-        </div>
-
-        <div class="hero-fruit-display">
-
-            <div class="fruit-orbit orbit-one">
-                🍎
-            </div>
-
-            <div class="fruit-orbit orbit-two">
-                🍌
-            </div>
-
-            <div class="fruit-orbit orbit-three">
-                🥝
-            </div>
-
-            <div class="big-fruit">
-                🍓
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= FEATURES ================= -->
-
-<section class="features">
-
-    <div class="feature">
-
-        <div class="feature-icon">
-            🍓
-        </div>
-
-        <div>
-            <strong data-i18n="fresh">
-                Yangi mevalar
-            </strong>
-
-            <p>
-                Har kuni yangi
-            </p>
-        </div>
-
-    </div>
-
-
-    <div class="feature">
-
-        <div class="feature-icon">
-            🌱
-        </div>
-
-        <div>
-            <strong data-i18n="naturalProduct">
-                Tabiiy mahsulot
-            </strong>
-
-            <p>
-                Sifatli va tabiiy
-            </p>
-        </div>
-
-    </div>
-
-
-    <div class="feature">
-
-        <div class="feature-icon">
-            🚚
-        </div>
-
-        <div>
-            <strong data-i18n="fast">
-                Tez xizmat
-            </strong>
-
-            <p>
-                Buyurtma oson
-            </p>
-        </div>
-
-    </div>
-
-
-    <div class="feature">
-
-        <div class="feature-icon">
-            ❤️
-        </div>
-
-        <div>
-            <strong data-i18n="quality">
-                Sifat kafolati
-            </strong>
-
-            <p>
-                Siz uchun sifat
-            </p>
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= FRUITS ================= -->
-
-<section class="fruits-section" id="fruits">
-
-    <div class="section-top">
-
-        <div>
-
-            <div class="section-label">
-                MEVA MIX
-            </div>
-
-            <h2>
-                Eng sara
-                <span>mevalar.</span>
-            </h2>
-
-            <p>
-                O‘zingizga yoqqan mevani tanlang
-                va savatchaga qo‘shing.
-            </p>
-
-        </div>
-
-
-        <button
-            type="button"
-            class="view-all-btn"
-            onclick="showFruits()"
-        >
-            <span data-i18n="allFruits">
-                Barchasini ko‘rish
-            </span>
-
-            →
-        </button>
-
-    </div>
-
-
-    <!-- SEARCH -->
-
-    <div class="fruit-tools">
-
-        <div class="search-box">
-
-            <span>🔍</span>
-
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Meva qidiring..."
-                oninput="searchFruits()"
-            >
-
-        </div>
-
-
-        <div class="categories">
-
-            <button
-                type="button"
-                class="category active"
-                onclick="filterFruits('all', this)"
-            >
-                Barchasi
-            </button>
-
-            <button
-                type="button"
-                class="category"
-                onclick="filterFruits('tropik', this)"
-            >
-                🥭 Tropik
-            </button>
-
-            <button
-                type="button"
-                class="category"
-                onclick="filterFruits('rezavor', this)"
-            >
-                🍓 Rezavor
-            </button>
-
-            <button
-                type="button"
-                class="category"
-                onclick="filterFruits('klassik', this)"
-            >
-                🍎 Klassik
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- FRUIT CARDS -->
-
-    <div
-        class="fruit-grid"
-        id="fruitGrid"
-    ></div>
-
-</section>
-
-
-<!-- ================= ABOUT ================= -->
-
-<section class="about-section" id="about">
-
-    <div class="about-box">
-
-        <div class="about-decoration">
-            🍓
-        </div>
-
-        <div class="about-content">
-
-            <div class="section-label">
-                MEVA MIX HAQIDA
-            </div>
-
-            <h2>
-                Meva tanlash
-                <span>endi oson.</span>
-            </h2>
-
-            <p data-i18n="aboutText">
-                Meva Mix — yangi, sifatli va mazali
-                mevalarni tanlashni osonlashtiradigan
-                zamonaviy meva do‘koni.
-            </p>
-
-
-            <div class="about-points">
-
-                <div>
-                    <span>✓</span>
-                    Yangi mahsulotlar
+    <header>
+        <div class="logo">Meva-Mix</div>
+        <nav>
+            <a href="#">Bosh sahifa</a>
+            <a href="#products">Mevalar</a>
+            <a href="#contact">Aloqa</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Saralangan va Premium Mevalar</h1>
+        <p>Siz uchun eng sara, lazzatli va sifatli mevalar to'plami. Hashamatli ta'm va foydali imkoniyatlar uyg'unligi.</p>
+        <a href="#products" class="btn-gold">Buyurtma berish</a>
+    </section>
+
+    <div class="container" id="products">
+        <h2 class="section-title">Bizning Mahsulotlar</h2>
+        
+        <div class="products-grid">
+            <!-- 1-mahsulot -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=500&q=80" alt="Olma" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">Qirol Olmasi</h3>
+                    <div class="product-price">25,000 so'm / kg</div>
+                    <button class="btn-gold" onclick="alert('Savatga qoirshildi!')">Savatga qo'shish</button>
                 </div>
-
-                <div>
-                    <span>✓</span>
-                    Sifatli mevalar
-                </div>
-
-                <div>
-                    <span>✓</span>
-                    Qulay buyurtma
-                </div>
-
-                <div>
-                    <span>✓</span>
-                    Tez xizmat
-                </div>
-
             </div>
 
-        </div>
-
-    </div>
-
-</section>
-
-</main>
-
-
-<!-- ================= CART ================= -->
-
-<div
-    class="cart-overlay"
-    id="cartOverlay"
-    onclick="toggleCart()"
-></div>
-
-
-<aside
-    class="cart-panel"
-    id="cartPanel"
->
-
-    <div class="cart-header">
-
-        <div>
-
-            <span>🛒</span>
-
-            <div>
-                <h2 data-i18n="cart">
-                    Savatcha
-                </h2>
-
-                <small id="cartItemsCount">
-                    0 ta mahsulot
-                </small>
+            <!-- 2-mahsulot -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1519996529931-28324d5a630e?auto=format&fit=crop&w=500&q=80" alt="Banan" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">Tropik Banan</h3>
+                    <div class="product-price">30,000 so'm / kg</div>
+                    <button class="btn-gold" onclick="alert('Savatga qoirshildi!')">Savatga qo'shish</button>
+                </div>
             </div>
 
-        </div>
-
-
-        <button
-            type="button"
-            onclick="toggleCart()"
-        >
-            ✕
-        </button>
-
-    </div>
-
-
-    <div
-        class="cart-items"
-        id="cartItems"
-    >
-
-        <div class="empty-cart">
-
-            <div class="empty-icon">
-                🛒
+            <!-- 3-mahsulot -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1537640538966-79f369143f8f?auto=format&fit=crop&w=500&q=80" alt="Qulupnay" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">Shirin Qulupnay</h3>
+                    <div class="product-price">60,000 so'm / kg</div>
+                    <button class="btn-gold" onclick="alert('Savatga qoirshildi!')">Savatga qo'shish</button>
+                </div>
             </div>
-
-            <h3 data-i18n="emptyCart">
-                Savatcha bo‘sh
-            </h3>
-
-            <p data-i18n="chooseFruit">
-                Mevalardan birortasini tanlang 🍎
-            </p>
-
         </div>
-
     </div>
 
-
-    <div class="cart-footer">
-
-        <div class="cart-total">
-
-            <span data-i18n="total">
-                Jami
-            </span>
-
-            <strong id="cartTotal">
-                0 so‘m
-            </strong>
-
-        </div>
-
-
-        <button
-            type="button"
-            class="checkout-button"
-            onclick="checkout()"
-        >
-            <span data-i18n="order">
-                Buyurtma berish
-            </span>
-
-            🎉
-        </button>
-
-    </div>
-
-</aside>
-
-
-<!-- FLOATING CART -->
-
-<button
-    type="button"
-    class="floating-cart"
-    onclick="toggleCart()"
->
-
-    🛒
-
-    <span id="cartCount">
-        0
-    </span>
-
-</button>
-
-
-<!-- ================= FOOTER ================= -->
-
-<footer>
-
-    <div class="footer-main">
-
-        <div class="footer-logo">
-
-            <span class="logo-mark">
-                M
-            </span>
-
-            <strong>
-                Meva <b>Mix</b>
-            </strong>
-
-        </div>
-
-        <p data-i18n="footerText">
-            Har kuni yangi meva,
-            har kuni yaxshi kayfiyat! ❤️
-        </p>
-
-    </div>
-
-
-    <div class="footer-bottom">
-
-        © 2026 Meva Mix.
-
-        <span data-i18n="rights">
-            Barcha huquqlar himoyalangan.
-        </span>
-
-    </div>
-
-</footer>
-
-
-<script src="script.js"></script>
+    <footer>
+        <p>&copy; 2026 Meva-Mix. Barcha huquqlar himoyalangan. GitHub orqali taqdim etilgan.</p>
+    </footer>
 
 </body>
 </html>
