@@ -3,79 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meva-Mix | Premium Mevalar Do'koni</title>
+    <title>Meva Mix - Fresh & Natural Fruits</title>
     <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <header>
-        <div class="logo">Meva-Mix</div>
-        <nav>
-            <a href="#">Bosh sahifa</a>
-            <a href="#products">Mevalar</a>
-            <button class="cart-btn" onclick="toggleCart()">🛒 Savatcha (<span id="cart-count">0</span>)</button>
-        </nav>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">🍎 Meva <span>Mix</span></a>
+            <nav class="nav-links">
+                <a href="#home" data-translate="home">Bosh sahifa</a>
+                <a href="#products" data-translate="products">Mevalar</a>
+                <a href="#about" data-translate="about">Biz haqimizda</a>
+                <a href="#contact" data-translate="contact">Bog'lanish</a>
+            </nav>
+            <div class="nav-actions">
+                <select id="languageSelect">
+                    <option value="uz">UZ</option>
+                    <option value="ru">RU</option>
+                    <option value="en">EN</option>
+                </select>
+                <button class="cart-btn" id="cartBtn">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <span id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
     </header>
 
-    <section class="hero">
-        <h1>Saralangan va Premium Mevalar</h1>
-        <p>Siz uchun eng sara, lazzatli va sifatli mevalar to'plami. Hashamatli ta'm va foydali imkoniyatlar uyg'unligi.</p>
-        <a href="#products" class="btn-gold">Buyurtma berish</a>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 data-translate="heroTitle">Eng saralari va yangi mevalar uyigacha yetkazib berish bilan!</h1>
+            <p data-translate="heroDesc">Tabiiy, vitaminlarga boy va xushbo'y mevalarimizni hoziroq buyurtma qiling.</p>
+            <a href="#products" class="btn-primary" data-translate="shopNow">Buyurtma berish</a>
+        </div>
     </section>
 
-    <div class="container" id="products">
-        <h2 class="section-title">Bizning Mahsulotlar</h2>
-        
-        <div class="products-grid">
-            <!-- 1-mahsulot -->
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=500&q=80" alt="Olma" class="product-img">
-                <div class="product-info">
-                    <h3 class="product-title">Qirol Olmasi</h3>
-                    <div class="product-price" data-price="25000">25,000 so'm / kg</div>
-                    <button class="btn-gold" onclick="addToCart('Qirol Olmasi', 25000)">Savatga qo'shish</button>
-                </div>
-            </div>
+    <!-- Products Section -->
+    <section id="products" class="products-section">
+        <h2 data-translate="productsTitle">Bizning mahsulotlar</h2>
+        <div class="products-grid" id="productsGrid">
+            <!-- Mahsulotlar JavaScript orqali dinamik qo'shiladi -->
+        </div>
+    </section>
 
-            <!-- 2-mahsulot -->
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1519996529931-28324d5a630e?auto=format&fit=crop&w=500&q=80" alt="Banan" class="product-img">
-                <div class="product-info">
-                    <h3 class="product-title">Tropik Banan</h3>
-                    <div class="product-price" data-price="30000">30,000 so'm / kg</div>
-                    <button class="btn-gold" onclick="addToCart('Tropik Banan', 30000)">Savatga qo'shish</button>
-                </div>
+    <!-- Cart Modal / Sidebar -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3 data-translate="cartTitle">Sizning savatchangiz</h3>
+                <button class="close-cart" id="closeCart">&times;</button>
             </div>
-
-            <!-- 3-mahsulot -->
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1537640538966-79f369143f8f?auto=format&fit=crop&w=500&q=80" alt="Qulupnay" class="product-img">
-                <div class="product-info">
-                    <h3 class="product-title">Shirin Qulupnay</h3>
-                    <div class="product-price" data-price="60000">60,000 so'm / kg</div>
-                    <button class="btn-gold" onclick="addToCart('Shirin Qulupnay', 60000)">Savatga qo'shish</button>
+            <div class="cart-items" id="cartItems">
+                <!-- Savatcha elementlari -->
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span data-translate="total">Jami:</span>
+                    <span id="totalPrice">0 so'm</span>
                 </div>
+                <button class="btn-primary checkout-btn" id="checkoutBtn" data-translate="checkout">Buyurtmani rasmiylashtirish</button>
             </div>
         </div>
     </div>
 
-    <!-- Savatcha Modali -->
-    <div id="cart-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="toggleCart()">&times;</span>
-            <h2>Sizning Savatchangiz</h2>
-            <div id="cart-items">
-                <p>Savatchangiz bo'sh</p>
-            </div>
-            <div class="cart-total">
-                Jami: <span id="total-price">0</span> so'm
-            </div>
-            <button class="btn-gold" style="width: 100%; margin-top: 15px;" onclick="checkout()">Buyurtmani rasmiylashtirish</button>
-        </div>
-    </div>
-
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2026 Meva-Mix. Barcha huquqlar himoyalangan. GitHub orqali taqdim etilgan.</p>
+        <p>&copy; 2026 Meva Mix. Barcha huquqlar himoyalangan.</p>
     </footer>
 
     <script src="script.js"></script>
