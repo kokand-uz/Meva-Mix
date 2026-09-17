@@ -13,7 +13,7 @@
         <nav>
             <a href="#">Bosh sahifa</a>
             <a href="#products">Mevalar</a>
-            <a href="#contact">Aloqa</a>
+            <button class="cart-btn" onclick="toggleCart()">🛒 Savatcha (<span id="cart-count">0</span>)</button>
         </nav>
     </header>
 
@@ -32,8 +32,8 @@
                 <img src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=500&q=80" alt="Olma" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title">Qirol Olmasi</h3>
-                    <div class="product-price">25,000 so'm / kg</div>
-                    <button class="btn-gold" onclick="alert('Savatga qo\'shildi!')">Savatga qo'shish</button>
+                    <div class="product-price" data-price="25000">25,000 so'm / kg</div>
+                    <button class="btn-gold" onclick="addToCart('Qirol Olmasi', 25000)">Savatga qo'shish</button>
                 </div>
             </div>
 
@@ -42,8 +42,8 @@
                 <img src="https://images.unsplash.com/photo-1519996529931-28324d5a630e?auto=format&fit=crop&w=500&q=80" alt="Banan" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title">Tropik Banan</h3>
-                    <div class="product-price">30,000 so'm / kg</div>
-                    <button class="btn-gold" onclick="alert('Savatga qo\'shildi!')">Savatga qo'shish</button>
+                    <div class="product-price" data-price="30000">30,000 so'm / kg</div>
+                    <button class="btn-gold" onclick="addToCart('Tropik Banan', 30000)">Savatga qo'shish</button>
                 </div>
             </div>
 
@@ -52,10 +52,25 @@
                 <img src="https://images.unsplash.com/photo-1537640538966-79f369143f8f?auto=format&fit=crop&w=500&q=80" alt="Qulupnay" class="product-img">
                 <div class="product-info">
                     <h3 class="product-title">Shirin Qulupnay</h3>
-                    <div class="product-price">60,000 so'm / kg</div>
-                    <button class="btn-gold" onclick="alert('Savatga qo\'shildi!')">Savatga qo'shish</button>
+                    <div class="product-price" data-price="60000">60,000 so'm / kg</div>
+                    <button class="btn-gold" onclick="addToCart('Shirin Qulupnay', 60000)">Savatga qo'shish</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Savatcha Modali -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleCart()">&times;</span>
+            <h2>Sizning Savatchangiz</h2>
+            <div id="cart-items">
+                <p>Savatchangiz bo'sh</p>
+            </div>
+            <div class="cart-total">
+                Jami: <span id="total-price">0</span> so'm
+            </div>
+            <button class="btn-gold" style="width: 100%; margin-top: 15px;" onclick="checkout()">Buyurtmani rasmiylashtirish</button>
         </div>
     </div>
 
@@ -63,5 +78,6 @@
         <p>&copy; 2026 Meva-Mix. Barcha huquqlar himoyalangan. GitHub orqali taqdim etilgan.</p>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>
